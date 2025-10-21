@@ -1304,29 +1304,46 @@
 
   <!-- Flowise como módulo: en un bloque NUEVO y separado -->
   <script type="module">
-    import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
+  import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
 
-    const brand = getComputedStyle(document.documentElement)
-                   .getPropertyValue('--brand').trim() || '#691c32';
+  // Toma la marca desde tu CSS (fallback al institucional #691c32)
+  const brand = getComputedStyle(document.documentElement)
+                  .getPropertyValue('--brand').trim() || '#691c32';
 
-    Chatbot.init({
-      chatflowid: "8f1072cf-0f9d-400e-974e-93d2c3ed6d3a",
-      apiHost: "https://daniel.fixtergeek.com",
-      theme: {
-        button: { backgroundColor: brand, right: 20, bottom: 20 },
-        chatWindow: {
-          title: "Asistente ARTF",
-          welcomeMessage: "Hola 👋, ¿Dudas con el Organigrama? Pídeme ayuda.",
-          userMessage: { backgroundColor: brand, textColor: "#fff" },
-          textInput: {
-            placeholder: "Escribe tu pregunta…",
-            sendButtonColor: brand,
-            autoFocus: true
-          }
+  Chatbot.init({
+    chatflowid: "8f1072cf-0f9d-400e-974e-93d2c3ed6d3a",
+    apiHost: "https://daniel.fixtergeek.com",
+    theme: {
+      button: { backgroundColor: brand, right: 20, bottom: 20 },
+      chatWindow: {
+        title: "Asistente ARTF",
+        showTitle: true,
+        welcomeMessage: "Hola 👋, ¿Dudas con el Organigrama? Pídeme ayuda.",
+        userMessage: { backgroundColor: brand, textColor: "#fff" },
+        textInput: {
+          placeholder: "Escribe tu pregunta…",
+          sendButtonColor: brand,
+          autoFocus: true
+        },
+        // Intenta vaciar el pie (en versiones que lo soportan)
+        footer: { text: "", company: "", companyLink: "" }
+      },
+      // Y, por si tu build aún lo muestra, lo ocultamos por CSS
+      customCSS: `
+        .chatbot-footer,
+        .flowise-footer,
+        .chat-window-footer,
+        [class*="footer"],
+        a[class*="powered"],
+        [data-testid="powered-by"],
+        [aria-label*="Powered by"]{
+          display: none !important;
         }
-      }
-    });
-  </script>
+      `
+    }
+  });
+</script>
+
 
 </body>
 </html>
