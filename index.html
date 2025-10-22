@@ -40,6 +40,12 @@
     [data-institutional="on"] .badge-bg{ fill:rgba(105,28,50,.10); stroke:rgba(105,28,50,.28); }
     [data-institutional="on"] .badge-text{ fill:#691c32; }
     [data-institutional="on"] .node-rect{ stroke:rgba(105,28,50,.22); }
+    [data-institutional="on"] .btn:hover{
+      background:rgba(255,255,255,.20) !important;
+      border-color:rgba(255,255,255,.48) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,.18);
+    }
     /* ======================================== */
 
     *{box-sizing:border-box}
@@ -52,13 +58,32 @@
     [data-theme="dark"] header{ background:rgba(15,23,42,.85); }
     h1{font-size:16px;margin:0}
     .toolbar{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .btn{padding:8px 12px;border:1px solid var(--stroke);border-radius:10px;background:#fff;font-weight:600;cursor:pointer;transition:.15s ease}
-    [data-theme="dark"] .btn{ background:#111827; color:#e5e7eb; }
+
+    /* Botones del header (search + toolbar) */
+    .btn{
+      padding:8px 12px;border:1px solid var(--stroke);border-radius:10px;background:#fff;font-weight:600;cursor:pointer;
+      transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .12s ease;
+      will-change: transform, box-shadow, background-color, border-color;
+      position: relative;
+    }
+    [data-theme="dark"] .btn{ background:#111827; color:#e5e7eb; border-color:#1f2937; }
+    .btn:hover{
+      background:#f8fafc; border-color:#cbd5e1; transform:translateY(-1px); box-shadow:0 6px 14px rgba(2,6,23,.08);
+    }
+    .btn:active{ transform:translateY(0); box-shadow: inset 0 2px 0 rgba(0,0,0,.04); }
+    .btn:focus-visible{
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59,130,246,.35);
+    }
+    [data-theme="dark"] .btn:hover{
+      background:#1f2937; border-color:#334155; box-shadow:0 10px 20px rgba(0,0,0,.35);
+    }
+
     .search{display:flex;gap:8px;align-items:center;background:#fff;padding:6px;border:1px solid var(--stroke);border-radius:12px}
     [data-theme="dark"] .search{ background:#0b1220; }
     .search input{border:none;outline:none;font:600 14px ui-sans-serif,system-ui;min-width:220px;background:transparent;color:var(--text)}
 
-    /* Nota debajo de los botones derechos */
+    /* Nota y pista de uso */
     .note{
       flex-basis:100%;
       text-align:right;
@@ -69,7 +94,7 @@
     }
     [data-institutional="on"] .note{ color:#fff; opacity:.9; }
 
-    #chart{height:calc(100vh - 120px);width:100vw;overflow:hidden;position:relative}
+    #chart{height:calc(100vh - 132px);width:100vw;overflow:hidden;position:relative}
     #results{padding:8px 16px;border-top:1px solid var(--stroke);background:#fff;display:flex;gap:8px;flex-wrap:wrap}
     [data-theme="dark"] #results{ background:#0b1220; }
     .chip{display:inline-flex;align-items:center;gap:8px;background:#f1f5f9;color:#0f172a;border:1px solid #e2e8f0;padding:6px 10px;border-radius:999px;cursor:pointer}
@@ -96,6 +121,75 @@
     .is-match .node-rect{stroke:var(--match);stroke-width:2.5px;filter:drop-shadow(0 6px 14px rgba(105,28,50,.18))}
     #no-data{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#64748b;font-weight:700}
     [data-theme="dark"] #no-data{ color:#94a3b8; }
+
+    /* Resaltado temporal con “pulso” */
+    @keyframes pulseRing {
+      0%{ box-shadow: 0 0 0 0 rgba(105,28,50,.35); }
+      70%{ box-shadow: 0 0 0 10px rgba(105,28,50,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(105,28,50,0); }
+    }
+    .is-highlight .node-rect{
+      stroke: var(--match);
+      stroke-width: 3px;
+      animation: pulseRing 1.2s ease-out 0s 2;
+    }
+
+    /* Pista de uso fija */
+    .hint{
+      position:absolute; left:16px; bottom:12px; z-index:4;
+      background: rgba(255,255,255,.92);
+      border:1px solid var(--stroke);
+      color: var(--muted);
+      padding:6px 10px; border-radius:10px; font-weight:700; font-size:12.5px;
+      backdrop-filter: blur(6px);
+      /* ✨ Efecto moderno + fade-out 10s */
+      animation: hintAttention 10s ease-out forwards;
+    }
+    [data-theme="dark"] .hint{ background: rgba(15,23,42,.85); }
+
+    /* Ocultar en export/impresión */
+    .hint.no-export{ display:none !important; }
+    @media print{ .hint{ display:none !important; } }
+
+    @keyframes hintAttention{
+      0%   { opacity: 1; transform: translateY(0); box-shadow: 0 10px 28px rgba(2,6,23,.10), 0 0 0 0 rgba(59,130,246,.35); }
+      10%  { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(2,6,23,.14), 0 0 0 8px rgba(59,130,246,0); }
+      20%  { transform: translateY(0);   box-shadow: 0 10px 28px rgba(2,6,23,.10), 0 0 0 0 rgba(59,130,246,.35); }
+      30%  { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(2,6,23,.14), 0 0 0 8px rgba(59,130,246,0); }
+      60%  { opacity: .9; }
+      80%  { opacity: .45; }
+      100% { opacity: 0; pointer-events: none; }
+    }
+
+    /* ===== Botón “Descargar PDF” con animación integrada ===== */
+    .btn.fancy{
+      width: 170px; height: 38px; border-radius: 24px;
+      border: 3px solid #ff304f; background: none;
+      display:flex; align-items:center; justify-content:center; gap:6px;
+      overflow:hidden;
+    }
+    .btn.fancy .lbl, .btn.fancy svg{
+      position: absolute; letter-spacing: 1.2px; font-weight: 800; text-transform: uppercase;
+      color:#002651; fill: transparent;
+    }
+    .btn.fancy svg{ width:20px; height:20px; }
+
+    .btn.fancy.animating{
+      width: 54px; border-left: 3px solid #1e2a78; border-bottom: 3px solid #1e2a78;
+      animation: spin 1800ms 200ms forwards ease-in-out;
+    }
+    .btn.fancy.animating .lbl{ color: transparent; }
+    .btn.fancy.animating svg{ animation: check 500ms 1800ms forwards ease-out; }
+
+    @keyframes spin {
+      80% { border: 3px solid transparent; border-left: 3px solid #303a52; }
+      100% { transform: rotate(1080deg); border: 3px solid #303a52; }
+    }
+    @keyframes check { to { fill: #17b978; } }
+
+    /* ✅ Label blanco en institucional/oscuro */
+    [data-institutional="on"] .btn.fancy .lbl,
+    [data-theme="dark"] .btn.fancy .lbl{ color:#fff !important; }
   </style>
 </head>
 <body>
@@ -103,7 +197,7 @@
     <h1>Organigrama · ARTF</h1>
 
     <div class="search">
-      <input id="q" list="acro-list" placeholder="Buscar por acrónimo o nombre… ej. DRTF / Direcci\u00f3n de Regulaci\u00f3n" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+      <input id="q" list="acro-list" placeholder="Buscar por acrónimo o nombre… ej. DRTF / Dirección de Regulación" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
       <datalist id="acro-list"></datalist>
       <button class="btn" id="btn-search">Buscar</button>
       <button class="btn" id="btn-clear">Limpiar</button>
@@ -115,14 +209,22 @@
       <button class="btn" id="btn-expand">Expandir todo</button>
       <button class="btn" id="btn-collapse">Colapsar todo</button>
       <button class="btn" id="btn-fit">Ajustar</button>
-      <button class="btn" id="btn-download">Descargar PDF</button> <!-- NUEVO -->
+
+      <!-- Botón animado que DESCARGA al primer clic -->
+      <button class="btn fancy noselect" id="btn-download" title="Descargar PDF del organigrama">
+        <span class="lbl">Descargar PDF</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M0 11c2.761.575 6.312 1.688 9 3.438 3.157-4.23 8.828-8.187 15-11.438-5.861 5.775-10.711 12.328-14 18.917-2.651-3.766-5.547-7.271-10-10.917z"/></svg>
+      </button>
     </div>
 
     <div class="note">Dirección de Procesos Administrativos de Obras | Subdirección de Implementación de Manuales y Procedimientos de Obra</div>
   </header>
 
   <div id="results" title="Resultados de búsqueda (clic para enfocar)"></div>
-  <div id="chart"><div id="no-data" style="display:none">Pega tu data</div></div>
+  <div id="chart">
+    <div id="no-data" style="display:none">Pega tu data</div>
+    <div class="hint">Haz clic fuera del diagrama y arrastra para ajustar la posición. Usa la rueda para hacer zoom.</div>
+  </div>
 
   <!-- JSON embebido (TU DATA) -->
   <script>
@@ -802,7 +904,7 @@
     };
   </script>
 
-  <!-- LÓGICA D3 + UI (hijos CGCVT juntos; separo solo NIETOS) -->
+  <!-- LÓGICA D3 + UI (ajustes; búsqueda; scroll vertical inteligente) -->
   <script>
   (function () {
     "use strict";
@@ -812,7 +914,7 @@
     const MAX_TEXT_W = 270, PAD_X = 16, PAD_BOTTOM = 12, BADGE_H = 18, BADGE_PAD = 8,
           PAD_TOP = BADGE_H + BADGE_PAD + 8, DEFAULT_W = MAX_TEXT_W + PAD_X*2, DEFAULT_H = 60;
 
-    const dataRef = data; // sin window
+    const dataRef = data;
 
     const host = document.getElementById('chart');
     const resultsEl = document.getElementById('results');
@@ -956,21 +1058,19 @@
       }
     }
 
-    /* ====== CLAVE: Mantener juntos los 3 hijos de CGCVT
-       y separar SOLO sus NIETOS para evitar encime ====== */
+    /* Mantener juntos los 3 hijos de CGCVT; separar SOLO NIETOS */
     function separateCGCVTGrandchildren(gap = dx * 2.2){
       const cg = findByAcr('CGCVT'); if (!cg) return;
       const kids = (cg.children || cg._children || []);
       if (!kids.length) return;
 
-      // Calculamos extents SOLO de descendientes (excluyendo al propio hijo)
+      // Extents SOLO de descendientes (excluyendo al propio hijo)
       const items = kids.map(k => {
         const ext = descendantsExtentX_exclSelf(k);
         if (!isFinite(ext.min) || !isFinite(ext.max)) { ext.min = k.x; ext.max = k.x; }
         return { node:k, ext };
       }).sort((a,b) => a.ext.min - b.ext.min);
 
-      // No-overlap entre descendientes, sin mover la tarjeta del hijo
       for (let i=1; i<items.length; i++){
         const prev = items[i-1];
         const cur  = items[i];
@@ -978,8 +1078,6 @@
         if (cur.ext.min < needMin){
           const delta = needMin - cur.ext.min;
           shiftDescendantsY(cur.node, delta); // mueve NIETOS, no el hijo
-          cur.ext.min += delta;
-          cur.ext.max += delta;
         }
       }
     }
@@ -1125,15 +1223,34 @@
       const ty = (h - bbox.height* scale)/2 - bbox.y * scale;
       svg.transition().duration(420).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
     }
+    function goHome(){ fitToScreen(60); }
 
     function focusOnKeepScale(d){
       const tr = d3.zoomTransform(svg.node());
       const k = tr.k;
       const w = host.clientWidth, h = host.clientHeight;
-      const box = d._box || {w: DEFAULT_W, h: DEFAULT_H};
+      const box = d._box || {w: 300, h: 60};
       const tx = w/2 - (d.y + box.w/2) * k + ORG_X_OFFSET;
       const ty = h/2 - (d.x) * k;
       svg.transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+    }
+
+    // === NUEVO: Pan sólo en Y para que el nodo quede visible verticalmente
+    function panNodeIntoViewY(node, margin = 48){
+      if (!node) return;
+      const tr = d3.zoomTransform(svg.node());
+      const k  = tr.k;
+      const h  = host.clientHeight;
+      const box = node._box || { w: 300, h: 60 };
+      const nodeTop    = (node.x - box.h/2) * k + tr.y;
+      const nodeBottom = (node.x + box.h/2) * k + tr.y;
+      const above = nodeTop < margin;
+      const below = nodeBottom > (h - margin);
+      if (above || below){
+        const targetY = Math.round(h/2 - (node.x * k));
+        const t = d3.zoomIdentity.translate(tr.x, targetY).scale(k);
+        svg.transition().duration(520).ease(d3.easeCubicOut).call(zoom.transform, t);
+      }
     }
 
     update(root);
@@ -1157,18 +1274,22 @@
     document.getElementById('btn-fit').onclick = ()=> fitToScreen(60);
 
     /* ===== Buscador ===== */
-    const allNodes = flattenAll(root);
+    const allNodes = (function flattenAll(node){
+      const out = [];
+      (function walk(n){ out.push(n); const kids = (n.children || n._children) || []; for (const k of kids) walk(k); })(node);
+      return out;
+    })(root);
 
     const indexAcr = new Map();
     const acroSetForList = new Set();
     for (const n of allNodes){
-      const acr = norm(getAcr(n));
+      const acr = (n?.data?.["acrónimo"] ?? n?.data?.["acronimo"] ?? "").toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
       if (acr){ acroSetForList.add(acr); if (!indexAcr.has(acr)) indexAcr.set(acr, []); indexAcr.get(acr).push(n); }
     }
 
     function refreshDatalist(prefix){
       listEl.innerHTML = '';
-      const q = norm(prefix || '');
+      const q = (prefix || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
       if (!q) return;
       const items = Array.from(acroSetForList).filter(a => a.startsWith(q)).sort();
       for (const acr of items){
@@ -1180,12 +1301,13 @@
     inputEl.addEventListener('input', (e)=> refreshDatalist(e.target.value));
 
     function clearMatches(){
-      gNodes.selectAll('g.node').classed('is-match', false);
+      gNodes.selectAll('g.node').classed('is-match', false).classed('is-highlight', false);
       resultsEl.innerHTML = '';
     }
 
     function showResults(qRaw){
       clearMatches();
+
       const query = norm(qRaw || inputEl.value);
       if (!query){ return; }
 
@@ -1204,25 +1326,39 @@
         return;
       }
 
+      // Asegurar que la ruta al nodo esté expandida
       matches.forEach(n => expandPathTo(n));
       update(root);
 
+      // Volver a la vista “home” (posición inicial)
+      goHome();
+
+      // Unificar y resaltar
       const seen = new Set(), unique = [];
       for (const n of matches){ if (!seen.has(n)) { seen.add(n); unique.push(n); } }
 
       const ids = new Set(unique.map(n => n.id));
       gNodes.selectAll('g.node').classed('is-match', d => ids.has(d.id));
 
+      // Chips y enfoque opcional al hacer clic
       resultsEl.innerHTML = '';
       unique.forEach((n, i) => {
         const chip = document.createElement('div');
         chip.className = 'chip';
-        const acr = getAcr(n);
+        const acr = (n?.data?.["acrónimo"] ?? n?.data?.["acronimo"] ?? "").toString().trim();
         chip.innerHTML = `<b>${acr || '—'}</b> · ${n.data.name}`;
-        chip.onclick = () => { focusOnKeepScale(n); };
+        chip.onclick = () => focusOnKeepScale(n);
         resultsEl.appendChild(chip);
-        if (i === 0) setTimeout(()=> focusOnKeepScale(n), 80);
+        if (i === 0) setTimeout(()=> chip.click(), 80);
       });
+
+      // Resaltar el primero con pulso y asegurar visibilidad vertical
+      const first = unique[0];
+      d3.selectAll('g.node').classed('is-highlight', d => d === first);
+      setTimeout(()=> d3.selectAll('g.node').classed('is-highlight', false), 3000);
+
+      // ➜ Pan solo en Y, por si quedó muy abajo (ej. "SIMPO")
+      setTimeout(() => panNodeIntoViewY(first, 48), 460);
     }
 
     document.getElementById('btn-search').onclick = ()=> showResults();
@@ -1250,48 +1386,72 @@
       update(root);
     });
 
-    /* === Botón: Descargar PDF (captura de #chart visible) === */
+    /* === Descargar PDF (captura #chart) + título centrado === */
+    async function exportPDF(){
+      const el = document.getElementById('chart');
+      const hint = document.querySelector('.hint');
+      hint?.classList.add('no-export');   // ⛔ evitar que salga en el PDF
+
+      const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#ffffff';
+
+      const canvas = await html2canvas(el, {
+        backgroundColor: bg,
+        scale: 2,
+        useCORS: true,
+        logging: false
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+
+      const { jsPDF } = window.jspdf;
+      const orientation = canvas.width >= canvas.height ? 'l' : 'p';
+      const pdf = new jsPDF({ orientation, unit: 'mm', format: 'a4' });
+
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+
+      // Título centrado arriba
+      pdf.setFont('helvetica','bold');
+      pdf.setFontSize(14);
+      const title = 'Organigrama · ARTF';
+      pdf.text(title, pageW/2, 12, { align: 'center' });
+
+      // Imagen centrada con márgenes y dejando espacio al título
+      const margin = 10;
+      const topGap = 8; // espacio extra bajo el título
+      const maxW = pageW - margin * 2;
+      const maxH = pageH - margin * 2 - 8; // leve ajuste
+
+      const ratio = Math.min(maxW / canvas.width, (maxH - 10) / canvas.height);
+      const drawW = canvas.width * ratio;
+      const drawH = canvas.height * ratio;
+      const x = (pageW - drawW) / 2;
+      const y = 18 + topGap; // debajo del título
+
+      pdf.addImage(imgData, 'PNG', x, y, drawW, drawH);
+
+      const t = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const filename = `organigrama-ARTF-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
+
+      pdf.save(filename);
+
+      hint?.classList.remove('no-export'); // ✅ restaurar
+    }
+
+    // Botón animado: dispara animación y descarga al PRIMER clic
     const btnDownload = document.getElementById('btn-download');
     btnDownload.addEventListener('click', async () => {
-      try {
-        const el = document.getElementById('chart');
-        const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#ffffff';
-
-        const canvas = await html2canvas(el, {
-          backgroundColor: bg,
-          scale: 2,
-          useCORS: true,
-          logging: false
-        });
-
-        const imgData = canvas.toDataURL('image/png');
-
-        const { jsPDF } = window.jspdf;
-        const orientation = canvas.width >= canvas.height ? 'l' : 'p';
-        const pdf = new jsPDF({ orientation, unit: 'mm', format: 'a4' });
-
-        const pageW = pdf.internal.pageSize.getWidth();
-        const pageH = pdf.internal.pageSize.getHeight();
-        const margin = 10;
-        const maxW = pageW - margin * 2;
-        const maxH = pageH - margin * 2;
-
-        const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
-        const drawW = canvas.width * ratio;
-        const drawH = canvas.height * ratio;
-        const x = (pageW - drawW) / 2;
-        const y = (pageH - drawH) / 2;
-
-        pdf.addImage(imgData, 'PNG', x, y, drawW, drawH);
-
-        const t = new Date();
-        const pad = n => String(n).padStart(2, '0');
-        const filename = `organigrama-ARTF-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
-
-        pdf.save(filename);
-      } catch (err) {
+      try{
+        btnDownload.classList.add('animating');
+        // Descarga inmediatamente
+        await exportPDF();
+      } catch (err){
         console.error('Error al exportar PDF:', err);
         alert('Ups, no pude generar el PDF. Revisa la consola para más detalle.');
+      } finally {
+        // Quitar animación tras un ciclo razonable
+        setTimeout(()=> btnDownload.classList.remove('animating'), 2300);
       }
     });
 
@@ -1303,47 +1463,113 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <!-- Flowise como módulo: en un bloque NUEVO y separado -->
-  <script type="module">
-  import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
+  <script>
+  (function(){
+    const brand =
+      (getComputedStyle(document.documentElement).getPropertyValue('--brand') || '').trim() ||
+      '#691c32';
 
-  // Toma la marca desde tu CSS (fallback al institucional #691c32)
-  const brand = getComputedStyle(document.documentElement)
-                  .getPropertyValue('--brand').trim() || '#691c32';
+    const style = document.createElement('style');
+    style.textContent = `
+      .flowise-footer,
+      .chat-window-footer,
+      [data-testid="powered-by"],
+      [aria-label*="Powered by"]{
+        display: none !important;
+      }
+      .chat-label{
+        position: fixed; right: 82px; bottom: 30px;
+        background: ${brand}; color:#fff; font:700 12px/1 ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
+        padding: 8px 10px; border-radius: 999px; box-shadow: 0 8px 18px rgba(0,0,0,.18);
+        pointer-events: none; z-index: 1000; white-space: nowrap;
+      }
+      @media (max-width: 640px){ .chat-label{ display:none !important; } }
+    `;
+    document.head.appendChild(style);
 
-  Chatbot.init({
-    chatflowid: "8f1072cf-0f9d-400e-974e-93d2c3ed6d3a",
-    apiHost: "https://daniel.fixtergeek.com",
-    theme: {
-      button: { backgroundColor: brand, right: 20, bottom: 20 },
-      chatWindow: {
-        title: "Asistente ARTF",
-        showTitle: true,
-        welcomeMessage: "Hola 👋, ¿Dudas con el Organigrama? Pídeme ayuda.",
-        userMessage: { backgroundColor: brand, textColor: "#fff" },
-        textInput: {
-          placeholder: "Escribe tu pregunta…",
-          sendButtonColor: brand,
-          autoFocus: true
-        },
-        // Intenta vaciar el pie (en versiones que lo soportan)
-        footer: { text: "", company: "", companyLink: "" }
-      },
-      // Y, por si tu build aún lo muestra, lo ocultamos por CSS
-      customCSS: `
-        .chatbot-footer,
-        .flowise-footer,
-        .chat-window-footer,
-        [class*="footer"],
-        a[class*="powered"],
-        [data-testid="powered-by"],
-        [aria-label*="Powered by"]{
-          display: none !important;
+    function openAssistant() {
+      try {
+        if (typeof window.Chatbot?.open === 'function') { window.Chatbot.open(); }
+        if (typeof window.Chatbot?.focus === 'function') { window.Chatbot.focus(); }
+        if (typeof window.Chatbot?.open === 'function' || typeof window.Chatbot?.focus === 'function') {
+          return true;
         }
-      `
+      } catch(_) {}
+      const sels = [
+        '.chatbot-button',
+        '[class*="chatbot-button"]',
+        '[class*="launcher"]',
+        'button[aria-label*="chat" i]',
+        'button[title*="chat" i]',
+        'button[aria-label*="asistente" i]'
+      ];
+      for (const sel of sels){
+        const btn = document.querySelector(sel);
+        if (btn){ btn.click(); return true; }
+      }
+      return false;
     }
-  });
-</script>
 
+    function openAssistantWithRetry() {
+      let tries = 0;
+      const iv = setInterval(() => {
+        if (openAssistant() || ++tries > 30) clearInterval(iv);
+      }, 150);
+    }
+
+    window.openAsistenteARTF = openAssistantWithRetry;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      import('https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js')
+        .then(mod => {
+          const Chatbot = mod?.default || mod?.Chatbot || mod;
+          window.Chatbot = Chatbot;
+
+          Chatbot.init({
+            chatflowid: '8f1072cf-0f9d-400e-974e-93d2c3ed6d3a',
+            apiHost: 'https://daniel.fixtergeek.com',
+            theme: {
+              button: { backgroundColor: brand, right: 20, bottom: 20 },
+              chatWindow: {
+                title: 'Asistente ARTF',
+                showTitle: true,
+                welcomeMessage: 'Hola 👋, ¿Dudas con el Organigrama? Pídeme ayuda.',
+                userMessage: { backgroundColor: brand, textColor: '#fff' },
+                textInput: {
+                  placeholder: 'Escribe tu pregunta…',
+                  sendButtonColor: brand,
+                  autoFocus: true
+                },
+                footer: { text: '', company: '', companyLink: '' }
+              },
+              customCSS: `
+                .flowise-footer,
+                .chat-window-footer,
+                [data-testid="powered-by"],
+                [aria-label*="Powered by"]{
+                  display: none !important;
+                }
+              `
+            }
+          });
+
+          const label = document.createElement('div');
+          label.className = 'chat-label';
+          label.textContent = 'Abrir Asistente ARTF';
+          document.body.appendChild(label);
+
+          window.addEventListener('keydown', (e) => {
+            if (e.altKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+              openAssistantWithRetry();
+            }
+          });
+        })
+        .catch(err => {
+          console.error('Error cargando Flowise embed:', err);
+        });
+    });
+  })();
+  </script>
 
 </body>
 </html>
