@@ -12,6 +12,7 @@
       --brand:#691c32; --ana1:#69631C; --ana2:#1C5669; --ana3:#BE7288; --ana4:#B3DBE8;
       --top1:#16a34a; --top2:#8b5cf6; --top3:#ec4899; --top4:#f59e0b; --top5:#f97316; --top6:#ef4444;
       --top7:#64748b; --top8:#14b8a6; --top9:#3b82f6; --match:var(--brand);
+      --accent:#3b82f6;
     }
     [data-theme="dark"]{
       --bg:#0b1220; --card:#0f172a; --stroke:#1f2937; --text:#e5e7eb; --muted:#94a3b8; --pill:#1f2937; --shadow:0 12px 32px rgba(0,0,0,.35);
@@ -43,7 +44,7 @@
     [data-institutional="on"] .btn:hover{
       background:rgba(255,255,255,.20) !important;
       border-color:rgba(255,255,255,.48) !important;
-      transform: translateY(-1px);
+      transform: translateY(-1px) scale(1.035);
       box-shadow: 0 6px 14px rgba(0,0,0,.18);
     }
     /* ======================================== */
@@ -62,21 +63,30 @@
     /* Botones del header (search + toolbar) */
     .btn{
       padding:8px 12px;border:1px solid var(--stroke);border-radius:10px;background:#fff;font-weight:600;cursor:pointer;
-      transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .12s ease;
-      will-change: transform, box-shadow, background-color, border-color;
       position: relative;
+      transform: translateY(0) scale(1);
+      transition:
+        background-color .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease,
+        transform .16s cubic-bezier(.2,.8,.2,1);
+      will-change: transform, box-shadow, background-color, border-color;
     }
     [data-theme="dark"] .btn{ background:#111827; color:#e5e7eb; border-color:#1f2937; }
     .btn:hover{
-      background:#f8fafc; border-color:#cbd5e1; transform:translateY(-1px); box-shadow:0 6px 14px rgba(2,6,23,.08);
+      background:#f8fafc; border-color:#cbd5e1;
+      transform: translateY(-1px) scale(1.035);
+      box-shadow:0 8px 18px rgba(2,6,23,.10);
     }
-    .btn:active{ transform:translateY(0); box-shadow: inset 0 2px 0 rgba(0,0,0,.04); }
+    .btn:active{ transform:translateY(0) scale(0.997); box-shadow: inset 0 2px 0 rgba(0,0,0,.04); }
     .btn:focus-visible{
       outline: none;
       box-shadow: 0 0 0 3px rgba(59,130,246,.35);
     }
     [data-theme="dark"] .btn:hover{
-      background:#1f2937; border-color:#334155; box-shadow:0 10px 20px rgba(0,0,0,.35);
+      background:#1f2937; border-color:#334155;
+      transform: translateY(-1px) scale(1.035);
+      box-shadow:0 10px 20px rgba(0,0,0,.35);
     }
 
     .search{display:flex;gap:8px;align-items:center;background:#fff;padding:6px;border:1px solid var(--stroke);border-radius:12px}
@@ -124,8 +134,8 @@
 
     /* Resaltado temporal con “pulso” */
     @keyframes pulseRing {
-      0%{ box-shadow: 0 0 0 0 rgba(105,28,50,.35); }
-      70%{ box-shadow: 0 0 0 10px rgba(105,28,50,0); }
+      0%{ box-shadow: 0 0 0 0 rgba(105,28,50,.42); }
+      70%{ box-shadow: 0 0 0 12px rgba(105,28,50,0); }
       100%{ box-shadow: 0 0 0 0 rgba(105,28,50,0); }
     }
     .is-highlight .node-rect{
@@ -142,7 +152,7 @@
       color: var(--muted);
       padding:6px 10px; border-radius:10px; font-weight:700; font-size:12.5px;
       backdrop-filter: blur(6px);
-      /* ✨ Efecto moderno + fade-out 10s */
+      /* ✨ Efecto moderno + fade-out 10s (con resalto inicial más fuerte) */
       animation: hintAttention 10s ease-out forwards;
     }
     [data-theme="dark"] .hint{ background: rgba(15,23,42,.85); }
@@ -151,14 +161,19 @@
     .hint.no-export{ display:none !important; }
     @media print{ .hint{ display:none !important; } }
 
+    /* 🔥 Resalto inicial más fuerte: doble pulso + halo y leve zoom */
     @keyframes hintAttention{
-      0%   { opacity: 1; transform: translateY(0); box-shadow: 0 10px 28px rgba(2,6,23,.10), 0 0 0 0 rgba(59,130,246,.35); }
-      10%  { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(2,6,23,.14), 0 0 0 8px rgba(59,130,246,0); }
-      20%  { transform: translateY(0);   box-shadow: 0 10px 28px rgba(2,6,23,.10), 0 0 0 0 rgba(59,130,246,.35); }
-      30%  { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(2,6,23,.14), 0 0 0 8px rgba(59,130,246,0); }
-      60%  { opacity: .9; }
-      80%  { opacity: .45; }
-      100% { opacity: 0; pointer-events: none; }
+      0%   { opacity:1; transform: translateY(0) scale(1.02);
+             box-shadow: 0 12px 28px rgba(2,6,23,.18), 0 0 0 0 rgba(59,130,246,.60); }
+      6%   { transform: translateY(-3px) scale(1.04);
+             box-shadow: 0 12px 28px rgba(2,6,23,.22), 0 0 0 16px rgba(59,130,246,0); }
+      12%  { transform: translateY(0) scale(1.02);
+             box-shadow: 0 12px 28px rgba(2,6,23,.18), 0 0 0 0 rgba(59,130,246,.55); }
+      18%  { transform: translateY(-2px) scale(1.03);
+             box-shadow: 0 12px 28px rgba(2,6,23,.20), 0 0 0 12px rgba(59,130,246,0); }
+      40%  { opacity:.95; transform: translateY(0) scale(1); }
+      80%  { opacity:.50; }
+      100% { opacity:0; pointer-events: none; }
     }
 
     /* ===== Botón “Descargar PDF” con animación integrada ===== */
@@ -167,12 +182,17 @@
       border: 3px solid #ff304f; background: none;
       display:flex; align-items:center; justify-content:center; gap:6px;
       overflow:hidden;
+      transition: transform .16s cubic-bezier(.2,.8,.2,1), box-shadow .18s ease;
     }
     .btn.fancy .lbl, .btn.fancy svg{
       position: absolute; letter-spacing: 1.2px; font-weight: 800; text-transform: uppercase;
       color:#002651; fill: transparent;
     }
     .btn.fancy svg{ width:20px; height:20px; }
+    .btn.fancy:hover{
+      transform: translateY(-1px) scale(1.04);
+      box-shadow: 0 8px 18px rgba(2,6,23,.10);
+    }
 
     .btn.fancy.animating{
       width: 54px; border-left: 3px solid #1e2a78; border-bottom: 3px solid #1e2a78;
@@ -904,7 +924,7 @@
     };
   </script>
 
-  <!-- LÓGICA D3 + UI (ajustes; búsqueda; scroll vertical inteligente) -->
+  <!-- LÓGICA D3 + UI -->
   <script>
   (function () {
     "use strict";
@@ -1031,7 +1051,7 @@
       return {min, max};
     }
 
-    /* Alineación general de CGCVT a media altura y una columna al frente */
+    /* Alineaciones específicas CGCVT */
     function adjustMidTier(){
       const cg = findByAcr('CGCVT'); if (!cg || !cg.parent) return;
       const tier1Y = (cg.parent.y || 0) + dy;
@@ -1054,34 +1074,28 @@
       const minPermitido = spExt.max + margin;
       if (kidsExt.min < minPermitido){
         const delta = minPermitido - kidsExt.min;
-        shiftDescendantsY(cg, delta); // mueve SOLO descendientes (los 3 hijos permanecen juntos)
+        shiftDescendantsY(cg, delta); // mueve SOLO descendientes
       }
     }
-
-    /* Mantener juntos los 3 hijos de CGCVT; separar SOLO NIETOS */
     function separateCGCVTGrandchildren(gap = dx * 2.2){
       const cg = findByAcr('CGCVT'); if (!cg) return;
       const kids = (cg.children || cg._children || []);
       if (!kids.length) return;
-
-      // Extents SOLO de descendientes (excluyendo al propio hijo)
       const items = kids.map(k => {
         const ext = descendantsExtentX_exclSelf(k);
         if (!isFinite(ext.min) || !isFinite(ext.max)) { ext.min = k.x; ext.max = k.x; }
         return { node:k, ext };
       }).sort((a,b) => a.ext.min - b.ext.min);
-
       for (let i=1; i<items.length; i++){
         const prev = items[i-1];
         const cur  = items[i];
         const needMin = prev.ext.max + gap;
         if (cur.ext.min < needMin){
           const delta = needMin - cur.ext.min;
-          shiftDescendantsY(cur.node, delta); // mueve NIETOS, no el hijo
+          shiftDescendantsY(cur.node, delta);
         }
       }
     }
-
     function shiftSubtreeH(node, delta){ node.descendants().forEach(n => { n.y += delta; }); }
     function promoteChildrenOneColumnUnder(acrList){
       acrList.forEach(acr => {
@@ -1097,7 +1111,7 @@
       adjustMidTier();
       applyOneSlotDownForCGCVT();
 
-      // Mantener juntos los 3 hijos; solo muevo NIETOS
+      // Mantener juntos los 3 hijos; separar NIETOS
       promoteChildrenOneColumnUnder(['DGT','DGO','DGCGIO']);
       separateCGCVTGrandchildren(dx * 2.2);
       clampCGCVTChildrenBelowSP();
@@ -1235,7 +1249,6 @@
       svg.transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
     }
 
-    // === NUEVO: Pan sólo en Y para que el nodo quede visible verticalmente
     function panNodeIntoViewY(node, margin = 48){
       if (!node) return;
       const tr = d3.zoomTransform(svg.node());
@@ -1308,7 +1321,7 @@
     function showResults(qRaw){
       clearMatches();
 
-      const query = norm(qRaw || inputEl.value);
+      const query = (qRaw || inputEl.value || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
       if (!query){ return; }
 
       let matches = [];
@@ -1318,7 +1331,10 @@
         for (const [acr, arr] of indexAcr){ if (acr.includes(query)) matches = matches.concat(arr); }
       }
       if (matches.length === 0){
-        for (const n of allNodes){ const nm = norm(n.data?.name || ''); if (nm && nm.includes(query)) matches.push(n); }
+        for (const n of allNodes){
+          const nm = (n.data?.name || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
+          if (nm && nm.includes(query)) matches.push(n);
+        }
       }
 
       if (matches.length === 0){
@@ -1326,21 +1342,16 @@
         return;
       }
 
-      // Asegurar que la ruta al nodo esté expandida
       matches.forEach(n => expandPathTo(n));
       update(root);
-
-      // Volver a la vista “home” (posición inicial)
       goHome();
 
-      // Unificar y resaltar
       const seen = new Set(), unique = [];
       for (const n of matches){ if (!seen.has(n)) { seen.add(n); unique.push(n); } }
 
       const ids = new Set(unique.map(n => n.id));
       gNodes.selectAll('g.node').classed('is-match', d => ids.has(d.id));
 
-      // Chips y enfoque opcional al hacer clic
       resultsEl.innerHTML = '';
       unique.forEach((n, i) => {
         const chip = document.createElement('div');
@@ -1352,12 +1363,9 @@
         if (i === 0) setTimeout(()=> chip.click(), 80);
       });
 
-      // Resaltar el primero con pulso y asegurar visibilidad vertical
       const first = unique[0];
       d3.selectAll('g.node').classed('is-highlight', d => d === first);
       setTimeout(()=> d3.selectAll('g.node').classed('is-highlight', false), 3000);
-
-      // ➜ Pan solo en Y, por si quedó muy abajo (ej. "SIMPO")
       setTimeout(() => panNodeIntoViewY(first, 48), 460);
     }
 
@@ -1380,9 +1388,9 @@
     setThemeAttr(baseTheme);
 
     btnInst.addEventListener('click', ()=>{
-      instOn = !instOn;
-      htmlEl.setAttribute('data-institutional', instOn ? 'on' : 'off');
-      document.getElementById('btn-inst').textContent = instOn ? 'Institucional: ON' : 'Modo institucional';
+      const instOn = htmlEl.getAttribute('data-institutional') === 'on';
+      htmlEl.setAttribute('data-institutional', instOn ? 'off' : 'on');
+      document.getElementById('btn-inst').textContent = instOn ? 'Modo institucional' : 'Institucional: ON';
       update(root);
     });
 
@@ -1418,15 +1426,15 @@
 
       // Imagen centrada con márgenes y dejando espacio al título
       const margin = 10;
-      const topGap = 8; // espacio extra bajo el título
+      const topGap = 8;
       const maxW = pageW - margin * 2;
-      const maxH = pageH - margin * 2 - 8; // leve ajuste
+      const maxH = pageH - margin * 2 - 8;
 
       const ratio = Math.min(maxW / canvas.width, (maxH - 10) / canvas.height);
       const drawW = canvas.width * ratio;
       const drawH = canvas.height * ratio;
       const x = (pageW - drawW) / 2;
-      const y = 18 + topGap; // debajo del título
+      const y = 18 + topGap;
 
       pdf.addImage(imgData, 'PNG', x, y, drawW, drawH);
 
@@ -1439,18 +1447,15 @@
       hint?.classList.remove('no-export'); // ✅ restaurar
     }
 
-    // Botón animado: dispara animación y descarga al PRIMER clic
     const btnDownload = document.getElementById('btn-download');
     btnDownload.addEventListener('click', async () => {
       try{
         btnDownload.classList.add('animating');
-        // Descarga inmediatamente
         await exportPDF();
       } catch (err){
         console.error('Error al exportar PDF:', err);
         alert('Ups, no pude generar el PDF. Revisa la consola para más detalle.');
       } finally {
-        // Quitar animación tras un ciclo razonable
         setTimeout(()=> btnDownload.classList.remove('animating'), 2300);
       }
     });
@@ -1462,7 +1467,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-  <!-- Flowise como módulo: en un bloque NUEVO y separado -->
+  <!-- Flowise como módulo -->
   <script>
   (function(){
     const brand =
