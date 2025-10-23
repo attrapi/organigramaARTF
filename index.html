@@ -2,7 +2,7 @@
 <html lang="es" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <title>Organigrama — ARTF</title>
+  <title>Organigrama — ATTRAPI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
@@ -219,7 +219,7 @@
 </head>
 <body>
   <header>
-    <h1>Organigrama · ARTF</h1>
+    <h1>Organigrama · ATTRAPI</h1>
 
     <div class="search">
       <input id="q" list="acro-list" placeholder="Buscar por acrónimo o nombre…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
@@ -1522,7 +1522,7 @@
 
       pdf.setFont('helvetica','bold');
       pdf.setFontSize(14);
-      const title = 'Organigrama · ARTF';
+      const title = 'Organigrama · ATTRAPI';
       pdf.text(title, pageW/2, 12, { align: 'center' });
 
       const margin = 10;
@@ -1540,7 +1540,7 @@
 
       const t = new Date();
       const pad = n => String(n).padStart(2, '0');
-      const filename = `organigrama-ARTF-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
+      const filename = `organigrama-ATRAPPI-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
 
       pdf.save(filename);
 
@@ -1636,7 +1636,7 @@
             theme: {
               button: { backgroundColor: brand, right: 20, bottom: 20 },
               chatWindow: {
-                title: 'Asistente ARTF',
+                title: 'Asistente ATTRAPI',
                 showTitle: true,
                 welcomeMessage: 'Hola 👋, ¿Dudas con el Organigrama? Pídeme ayuda.',
                 userMessage: { backgroundColor: brand, textColor: '#fff' },
@@ -1660,7 +1660,7 @@
 
           const label = document.createElement('div');
           label.className = 'chat-label';
-          label.textContent = 'Abrir Asistente ARTF';
+          label.textContent = 'Abrir Asistente ATTRAPI';
           document.body.appendChild(label);
 
           window.addEventListener('keydown', (e) => {
@@ -1678,3 +1678,4 @@
 
 </body>
 </html>
+
