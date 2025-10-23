@@ -11,7 +11,8 @@
       --pill:#f3e7eb; --shadow:0 10px 28px rgba(15,23,42,.08);
       --brand:#691c32; --ana1:#69631C; --ana2:#1C5669; --ana3:#BE7288; --ana4:#B3DBE8;
       --top1:#16a34a; --top2:#8b5cf6; --top3:#ec4899; --top4:#f59e0b; --top5:#f97316; --top6:#ef4444;
-      --top7:#64748b; --top8:#14b8a6; --top9:#3b82f6; --match:var(--brand);
+      --top7:#64748b; --top8:#14b8a6; --top9:#3b82f6;
+      --match:var(--brand);
       --accent:#3b82f6;
     }
     [data-theme="dark"]{
@@ -173,7 +174,7 @@
       100% { opacity:0; pointer-events: none; }
     }
 
-    /* ===== Botón “Descargar PDF” (con hover scale) ===== */
+    /* ===== Botón “Descargar PDF” ===== */
     .btn.fancy{
       width: 170px; height: 38px; border-radius: 24px;
       border: 3px solid #ff304f; background: none;
@@ -201,16 +202,12 @@
       100% { transform: rotate(1080deg); border: 3px solid #303a52; }
     }
     @keyframes check { to { fill: #17b978; } }
-    [data-institutional="on"] .btn.fancy .lbl,
-    [data-theme="dark"] .btn.fancy .lbl{ color:#fff !important; }
 
     /* ======= Ajustes MOBILE (≤768px) ======= */
     @media (max-width:768px){
       header{ gap:8px; }
       .search input{ min-width: 140px; }
-      /* Oculta TODO menos Descargar PDF en la toolbar */
       .toolbar .btn.hide-m { display: none !important; }
-      /* Nota corta en móvil */
       .note .full{ display:none; }
       .note .short{ display:inline; }
     }
@@ -659,7 +656,8 @@
             }
           ]
         },
-        { "name": "Dirección General de Seguimiento a Proyectos y Asuntos Estratégicos ", "acrónimo": "DGSPAE",
+        {
+          "name": "Dirección General de Seguimiento a Proyectos y Asuntos Estratégicos ", "acrónimo": "DGSPAE",
           "children": [
             {
               "name": "Coordinación de Relaciones Institucionales con Asignatarios y Concesionarios", "acrónimo": "CRIAC",
@@ -956,8 +954,14 @@
     const gLinks     = gRoot.append('g').attr('class','links');
     const gNodes     = gRoot.append('g').attr('class','nodes');
 
+    // ZOOM + transform helpers
     const zoom = d3.zoom().scaleExtent([0.5, 2.6]).on('zoom', (ev)=> gRoot.attr('transform', ev.transform));
     svg.call(zoom);
+    let HOME = null; // guardaremos el transform "home" exacto del auto-fit
+
+    function applyTransform(t, duration=420){
+      svg.transition().duration(duration).ease(d3.easeCubicOut).call(zoom.transform, t);
+    }
 
     function css(varName, fallback){ return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || fallback; }
     function getDepthPalette(){ return [css('--brand','#691c32'), css('--ana1','#69631C'), css('--ana2','#1C5669'), css('--ana3','#BE7288'), css('--ana4','#B3DBE8')]; }
@@ -989,10 +993,10 @@
     function hasDataKids(d){ return dataKidsCount(d) > 0; }
 
     /* ======= MODO INSTITUCIONAL ======= */
-    let instOn = false;
     function nodeColor(d){
       const BRAND = css('--brand', '#691c32');
-      if (instOn) return BRAND;
+      const isInst = document.documentElement.getAttribute('data-institutional') === 'on';
+      if (isInst) return BRAND;
       const DEPTH_PAL = getDepthPalette();
       if (d.depth === 1 && d.parent){
         const siblings = (d.parent.children || d.parent._children || []);
@@ -1045,6 +1049,7 @@
         n.children.forEach(c => { c.x += delta; walk(c); });
       })(node);
     }
+    function shiftSubtreeH(node, delta){ node.descendants().forEach(n => { n.y += delta; }); }
 
     function subtreeExtentX(node){
       let min = +Infinity, max = -Infinity;
@@ -1105,12 +1110,59 @@
         }
       }
     }
-    function shiftSubtreeH(node, delta){ node.descendants().forEach(n => { n.y += delta; }); }
+
+    /* === Hijos de DGT, DGO y DGCGIO a una sola columna (alineación) === */
     function promoteChildrenOneColumnUnder(acrList){
       acrList.forEach(acr => {
         const top = findByAcr(acr);
-        if (!top || !(top.children && top.children.length)) return;
-        top.children.forEach(ch => shiftSubtreeH(ch, -dy));
+        if (!top) return;
+        const kids = (top.children || top._children || []);
+        kids.forEach(ch => {
+          const desiredY = top.y + dy;
+          const delta    = desiredY - ch.y;
+          shiftSubtreeH(ch, delta);
+        });
+      });
+    }
+
+    /* === Mover un único nodo por ACRÓNIMO === */
+    function nudgeVerticalByAcr(acr, deltaPx){
+      const n = findByAcr(acr);
+      if (!n || !deltaPx) return;
+      shiftSubtreeY(n, deltaPx);
+    }
+    /* === Mover un único nodo por NOMBRE exacto === */
+    function findByName(name){
+      const target = norm(name);
+      const all = flattenAll(root);
+      for (const n of all){
+        const nm = (n.data?.name || '');
+        if (norm(nm) === target) return n;
+      }
+      return null;
+    }
+    function nudgeVerticalByName(name, deltaPx){
+      const n = findByName(name);
+      if (!n || !deltaPx) return;
+      shiftSubtreeY(n, deltaPx);
+    }
+
+    /* === Separar NIETOS de un acrónimo (simétrico ±gap) === */
+    function separateGrandchildrenUnderAcr(acr, gapPx){
+      const top = findByAcr(acr);
+      if (!top) return;
+      const children = (top.children || top._children || []);
+      let grandkids = [];
+      children.forEach(ch => {
+        const arr = (ch.children || ch._children || []);
+        grandkids = grandkids.concat(arr);
+      });
+      if (grandkids.length < 2) return;
+      grandkids.sort((a,b) => a.x - b.x);
+      const base = ((grandkids.length - 1) / 2) * gapPx;
+      grandkids.forEach((g, i) => {
+        const delta = i * gapPx - base;
+        shiftSubtreeY(g, delta);
       });
     }
 
@@ -1120,9 +1172,38 @@
       adjustMidTier();
       applyOneSlotDownForCGCVT();
 
+      /* Mantener ajustes previos */
       promoteChildrenOneColumnUnder(['DGT','DGO','DGCGIO']);
       separateCGCVTGrandchildren(dx * 2.2);
       clampCGCVTChildrenBelowSP();
+
+      /* === AJUSTES SOLICITADOS PREVIOS === */
+      nudgeVerticalByAcr('JDIMPOA', -15);   // subir 15
+      nudgeVerticalByAcr('JDAOA',  -15);    // subir 15
+      nudgeVerticalByAcr('DGT',     10);    // bajar 10
+      nudgeVerticalByAcr('EADGVSR', -10);   // subir 10
+      separateGrandchildrenUnderAcr('DGSPAE', 10); // separar nietos 10px
+      nudgeVerticalByAcr('SDMSA',   10);    // bajar 10
+      nudgeVerticalByAcr('JDDPF',   10);    // bajar 10
+      nudgeVerticalByAcr('SPEPF',   10);    // bajar 10
+      nudgeVerticalByAcr('JDASI',   10);    // bajar 10
+      nudgeVerticalByName('Jefatura de Departamento de Asuntos Laborales, Civiles, Agrarios y Penales', 20); // bajar 20
+      nudgeVerticalByAcr('SGTSOCO', 10);    // bajar 10
+      nudgeVerticalByAcr('JDSMOOF', 10);    // bajar 10
+
+      /* === SUBIR 10px CRIAC === */
+      nudgeVerticalByAcr('CRIAC',  -10);
+      nudgeVerticalByName('Coordinación de Relaciones Institucionales con Asignatarios y Concesionarios', -10);
+
+      /* === "B" +5px, "C" +10px (ya aplicados) === */
+      nudgeVerticalByAcr('SPSPEB', 5);
+      nudgeVerticalByName('Subdirección de Programación y Seguimiento de Proyectos Estratégicos "B"', 5);
+      nudgeVerticalByAcr('SPSPEC', 10);
+      nudgeVerticalByName('Subdirección de Programación y Seguimiento de Proyectos Estratégicos "C"', 10);
+
+      /* === NUEVO: Enlace Logístico BAJAR 10px === */
+      nudgeVerticalByAcr('EL', 10);
+      nudgeVerticalByName('Enlace Logístico', 10);
 
       const nodes = root.descendants();
       const links = root.links();
@@ -1236,25 +1317,28 @@
     function collapseAll(d=root){ if (d.children){ d._children = d.children; d.children = null; } if (d._children) d._children.forEach(collapseAll); }
     function expandPathTo(node){ let p = node.parent; while (p){ if (!p.children){ p.children = p._children; p._children = null; } p = p.parent; } }
 
-    function fitToScreen(pad=60){
+    function fitToScreen(pad=60, saveHome=false){
       const bbox = gRoot.node().getBBox();
       const w = host.clientWidth, h = host.clientHeight;
       const scale = Math.min(0.75, Math.max(0.5, Math.min((w - pad*2)/bbox.width, (h - pad*2)/bbox.height)));
       let tx = (w - bbox.width * scale)/2 - bbox.x * scale;
-      tx += -450;
+      tx += ORG_X_OFFSET;
       const ty = (h - bbox.height* scale)/2 - bbox.y * scale;
-      svg.transition().duration(420).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+      const t = d3.zoomIdentity.translate(tx, ty).scale(scale);
+      applyTransform(t);
+      if (saveHome || !HOME) HOME = t;
+      return t;
     }
-    function goHome(){ fitToScreen(60); }
+    function goHome(){ if (HOME) applyTransform(HOME); else fitToScreen(60, true); }
 
     function focusOnKeepScale(d){
       const tr = d3.zoomTransform(svg.node());
       const k = tr.k;
       const w = host.clientWidth, h = host.clientHeight;
       const box = d._box || {w: 300, h: 60};
-      const tx = w/2 - (d.y + box.w/2) * k - 450;
+      const tx = w/2 - (d.y + box.w/2) * k + ORG_X_OFFSET;
       const ty = h/2 - (d.x) * k;
-      svg.transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+      applyTransform(d3.zoomIdentity.translate(tx, ty).scale(k), 450);
     }
 
     function panNodeIntoViewY(node, margin = 48){
@@ -1270,7 +1354,7 @@
       if (above || below){
         const targetY = Math.round(h/2 - (node.x * k));
         const t = d3.zoomIdentity.translate(tr.x, targetY).scale(k);
-        svg.transition().duration(520).ease(d3.easeCubicOut).call(zoom.transform, t);
+        applyTransform(t, 520);
       }
     }
 
@@ -1280,9 +1364,9 @@
       let tries = 0, maxTries = 24;
       const tick = () => {
         const b = gRoot.node()?.getBBox?.();
-        if (b && b.width > 0 && b.height > 0) { fitToScreen(60); }
+        if (b && b.width > 0 && b.height > 0) { fitToScreen(60, true); }
         else if (tries++ < maxTries) { requestAnimationFrame(tick); }
-        else { setTimeout(() => fitToScreen(60), 220); }
+        else { setTimeout(() => fitToScreen(60, true), 220); }
       };
       if (document.fonts?.ready) { document.fonts.ready.then(() => requestAnimationFrame(tick)); }
       else { requestAnimationFrame(tick); }
@@ -1290,9 +1374,9 @@
     window.addEventListener('load', autoFit, { once: true });
     window.addEventListener('pageshow', () => autoFit());
 
-    document.getElementById('btn-expand').onclick = ()=>{ expandAll(); update(root); setTimeout(()=>fitToScreen(60), 30); };
-    document.getElementById('btn-collapse').onclick = ()=>{ collapseAll(); root.children = root._children; root._children=null; update(root); setTimeout(()=>fitToScreen(60), 30); };
-    document.getElementById('btn-fit').onclick = ()=> fitToScreen(60);
+    document.getElementById('btn-expand').onclick = ()=>{ expandAll(); update(root); setTimeout(()=>goHome(), 30); };
+    document.getElementById('btn-collapse').onclick = ()=>{ collapseAll(); root.children = root._children; root._children=null; update(root); setTimeout(()=>goHome(), 30); };
+    document.getElementById('btn-fit').onclick = ()=> goHome();
 
     /* ===== Buscador ===== */
     const allNodes = (function flattenAll(node){
@@ -1382,7 +1466,7 @@
 
     document.getElementById('btn-search').onclick = ()=> showResults();
     inputEl.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') showResults(); });
-    document.getElementById('btn-clear').onclick = ()=>{ inputEl.value = ''; refreshDatalist(''); clearMatches(); fitToScreen(60); };
+    document.getElementById('btn-clear').onclick = ()=>{ inputEl.value = ''; refreshDatalist(''); clearMatches(); goHome(); };
 
     /* Tema claro/oscuro + Institucional */
     const htmlEl  = document.documentElement;
@@ -1395,6 +1479,8 @@
       setThemeAttr(baseTheme);
       btnTheme.textContent = (baseTheme === 'dark') ? 'Modo luz' : 'Modo oscuro';
       update(root);
+      // mantener HOME al cambiar tema
+      setTimeout(()=> goHome(), 20);
     });
     setThemeAttr(baseTheme);
 
@@ -1403,6 +1489,7 @@
       htmlEl.setAttribute('data-institutional', instOn ? 'off' : 'on');
       document.getElementById('btn-inst').textContent = instOn ? 'Modo institucional' : 'Institucional: ON';
       update(root);
+      setTimeout(()=> goHome(), 20);
     });
 
     /* === Descargar PDF (captura #chart) con título centrado === */
@@ -1587,4 +1674,3 @@
 
 </body>
 </html>
-
