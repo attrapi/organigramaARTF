@@ -22,88 +22,50 @@
       --top7:#94a3b8; --top8:#14b8a6; --top9:#60a5fa;
     }
 
-    /* ===== MODO INSTITUCIONAL (#691c32) ===== */
-    [data-institutional="on"] header{
-      background:#691c32 !important;
-      border-bottom-color:#691c32 !important;
-      color:#fff;
-    }
+    /* Modo institucional */
+    [data-institutional="on"] header{ background:#691c32 !important; border-bottom-color:#691c32 !important; color:#fff; }
     [data-institutional="on"] header h1{ color:#fff; }
     [data-institutional="on"] .btn{
-      background:rgba(255,255,255,.12) !important;
-      color:#fff !important;
-      border-color:rgba(255,255,255,.28) !important;
+      background:rgba(255,255,255,.12) !important; color:#fff !important; border-color:rgba(255,255,255,.28) !important;
     }
-    [data-institutional="on"] .search{
-      background:rgba(255,255,255,.12) !important;
-      border-color:rgba(255,255,255,.28) !important;
-    }
+    [data-institutional="on"] .search{ background:rgba(255,255,255,.12) !important; border-color:rgba(255,255,255,.28) !important; }
     [data-institutional="on"] .search input{ color:#fff !important; }
     [data-institutional="on"] .badge-bg{ fill:rgba(105,28,50,.10); stroke:rgba(105,28,50,.28); }
     [data-institutional="on"] .badge-text{ fill:#691c32; }
     [data-institutional="on"] .node-rect{ stroke:rgba(105,28,50,.22); }
     [data-institutional="on"] .btn:hover{
-      background:rgba(255,255,255,.20) !important;
-      border-color:rgba(255,255,255,.48) !important;
-      transform: translateY(-1px) scale(1.035);
-      box-shadow: 0 6px 14px rgba(0,0,0,.18);
+      background:rgba(255,255,255,.20) !important; border-color:rgba(255,255,255,.48) !important;
+      transform: translateY(-1px) scale(1.035); box-shadow: 0 6px 14px rgba(0,0,0,.18);
     }
-    /* ======================================== */
 
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
     header{
       padding:12px 16px;position:sticky;top:0;z-index:5;background:rgba(255,255,255,.92);
-      backdrop-filter:blur(6px);border-bottom:1px solid var(--stroke);display:flex;gap:10px;
-      align-items:center;flex-wrap:wrap
+      backdrop-filter:blur(6px);border-bottom:1px solid var(--stroke);display:flex;gap:10px;align-items:center;flex-wrap:wrap
     }
     [data-theme="dark"] header{ background:rgba(15,23,42,.85); }
     h1{font-size:16px;margin:0}
     .toolbar{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
-    /* Botones (con hover scale para todos) */
     .btn{
       padding:8px 12px;border:1px solid var(--stroke);border-radius:10px;background:#fff;font-weight:600;cursor:pointer;
-      position: relative;
       transform: translateY(0) scale(1);
-      transition:
-        background-color .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease,
-        transform .16s cubic-bezier(.2,.8,.2,1);
+      transition:background-color .18s,border-color .18s,box-shadow .18s,transform .16s cubic-bezier(.2,.8,.2,1);
       will-change: transform, box-shadow, background-color, border-color;
     }
     [data-theme="dark"] .btn{ background:#111827; color:#e5e7eb; border-color:#1f2937; }
-    .btn:hover{
-      background:#f8fafc; border-color:#cbd5e1;
-      transform: translateY(-1px) scale(1.035);
-      box-shadow:0 8px 18px rgba(2,6,23,.10);
-    }
+    .btn:hover{ background:#f8fafc; border-color:#cbd5e1; transform: translateY(-1px) scale(1.035); box-shadow:0 8px 18px rgba(2,6,23,.10); }
     .btn:active{ transform:translateY(0) scale(0.997); box-shadow: inset 0 2px 0 rgba(0,0,0,.04); }
-    .btn:focus-visible{
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(59,130,246,.35);
-    }
-    [data-theme="dark"] .btn:hover{
-      background:#1f2937; border-color:#334155;
-      transform: translateY(-1px) scale(1.035);
-      box-shadow:0 10px 20px rgba(0,0,0,.35);
-    }
+    .btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.35); }
 
     .search{display:flex;gap:8px;align-items:center;background:#fff;padding:6px;border:1px solid var(--stroke);border-radius:12px}
     [data-theme="dark"] .search{ background:#0b1220; }
-    .search input{border:none;outline:none;font:600 14px ui-sans-serif,system-ui;min-width:220px;background:transparent;color:var(--text)}
+    /* ← SOLO este cambio: de 220px a 180px */
+    .search input{border:none;outline:none;font:600 14px ui-sans-serif,system-ui;min-width:180px;background:transparent;color:var(--text)}
 
-    /* Nota y pista de uso */
-    .note{
-      flex-basis:100%;
-      text-align:right;
-      font-weight:600;
-      font-size:12.5px;
-      color:var(--muted);
-      margin-top:4px;
-    }
-    .note .short{ display:none; } /* se muestra solo en mobile */
+    .note{ flex-basis:100%; text-align:right; font-weight:600; font-size:12.5px; color:var(--muted); margin-top:4px; }
+    .note .short{ display:none; }
     [data-institutional="on"] .note{ color:#fff; opacity:.9; }
 
     #chart{height:calc(100vh - 132px);width:100vw;overflow:hidden;position:relative}
@@ -124,97 +86,67 @@
     .node-sub{font-size:12px;fill:#64748b}
     [data-theme="dark"] .node-sub{ fill:#94a3b8; }
     .hit{fill:transparent;cursor:pointer}
+
     .badge{pointer-events:none}
     .badge-bg{fill:var(--pill);stroke:#ead1d8;stroke-width:1px;rx:8;ry:8}
     [data-theme="dark"] .badge-bg{ stroke:#334155; }
     .badge-text{fill:#5b1b2f;font-weight:800;font-size:10.7px;letter-spacing:.35px;text-transform:uppercase}
     [data-theme="dark"] .badge-text{ fill:#e5e7eb; }
     .count-tx{fill:#fff;font-weight:800;font-size:10px;dominant-baseline:middle;text-anchor:middle}
+
     .is-match .node-rect{stroke:var(--match);stroke-width:2.5px;filter:drop-shadow(0 6px 14px rgba(105,28,50,.18))}
     #no-data{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#64748b;font-weight:700}
     [data-theme="dark"] #no-data{ color:#94a3b8; }
 
-    /* Resaltado temporal con “pulso” */
-    @keyframes pulseRing {
-      0%{ box-shadow: 0 0 0 0 rgba(105,28,50,.42); }
-      70%{ box-shadow: 0 0 0 12px rgba(105,28,50,0); }
-      100%{ box-shadow: 0 0 0 0 rgba(105,28,50,0); }
-    }
-    .is-highlight .node-rect{
-      stroke: var(--match);
-      stroke-width: 3px;
-      animation: pulseRing 1.2s ease-out 0s 2;
-    }
+    @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(105,28,50,.42)} 70%{box-shadow:0 0 0 12px rgba(105,28,50,0)} 100%{box-shadow:0 0 0 0 rgba(105,28,50,0)} }
+    .is-highlight .node-rect{ stroke: var(--match); stroke-width: 3px; animation: pulseRing 1.2s ease-out 0s 2; }
 
-    /* Pista de uso fija (10s, con resalto fuerte al inicio) */
     .hint{
-      position:absolute; left:16px; bottom:12px; z-index:4;
-      background: rgba(255,255,255,.92);
-      border:1px solid var(--stroke);
-      color: var(--muted);
-      padding:6px 10px; border-radius:10px; font-weight:700; font-size:12.5px;
-      backdrop-filter: blur(6px);
-      animation: hintAttention 10s ease-out forwards;
+      position:absolute; left:16px; bottom:12px; z-index:4; background:rgba(255,255,255,.92);
+      border:1px solid var(--stroke); color:var(--muted); padding:6px 10px; border-radius:10px; font-weight:700; font-size:12.5px;
+      backdrop-filter: blur(6px); animation: hintAttention 10s ease-out forwards;
     }
     [data-theme="dark"] .hint{ background: rgba(15,23,42,.85); }
     .hint.no-export{ display:none !important; }
     @media print{ .hint{ display:none !important; } }
-
     @keyframes hintAttention{
-      0%   { opacity:1; transform: translateY(0) scale(1.02);
-             box-shadow: 0 12px 28px rgba(2,6,23,.18), 0 0 0 0 rgba(59,130,246,.60); }
-      6%   { transform: translateY(-3px) scale(1.04);
-             box-shadow: 0 12px 28px rgba(2,6,23,.22), 0 0 0 16px rgba(59,130,246,0); }
-      12%  { transform: translateY(0) scale(1.02);
-             box-shadow: 0 12px 28px rgba(2,6,23,.18), 0 0 0 0 rgba(59,130,246,.55); }
-      18%  { transform: translateY(-2px) scale(1.03);
-             box-shadow: 0 12px 28px rgba(2,6,23,.20), 0 0 0 12px rgba(59,130,246,0); }
-      40%  { opacity:.95; transform: translateY(0) scale(1); }
-      80%  { opacity:.50; }
-      100% { opacity:0; pointer-events: none; }
+      0%{opacity:1; transform: translateY(0) scale(1.02); box-shadow: 0 12px 28px rgba(2,6,23,.18), 0 0 0 0 rgba(59,130,246,.60);}
+      6%{transform: translateY(-3px) scale(1.04); box-shadow:0 12px 28px rgba(2,6,23,.22), 0 0 0 16px rgba(59,130,246,0);}
+      12%{transform: translateY(0) scale(1.02); box-shadow:0 12px 28px rgba(2,6,23,.18), 0 0 0 0 rgba(59,130,246,.55);}
+      18%{transform: translateY(-2px) scale(1.03); box-shadow:0 12px 28px rgba(2,6,23,.20), 0 0 0 12px rgba(59,130,246,0);}
+      40%{opacity:.95; transform: translateY(0) scale(1);}
+      80%{opacity:.50;}
+      100%{opacity:0; pointer-events:none;}
     }
 
-    /* ===== Botón “Descargar PDF” ===== */
-    .btn.fancy{
-      width: 170px; height: 38px; border-radius: 24px;
-      border: 3px solid #ff304f; background: none;
-      display:flex; align-items:center; justify-content:center; gap:6px;
-      overflow:hidden;
-      transition: transform .16s cubic-bezier(.2,.8,.2,1), box-shadow .18s ease;
-    }
-    .btn.fancy .lbl, .btn.fancy svg{
-      position: absolute; letter-spacing: 1.2px; font-weight: 800; text-transform: uppercase;
-      color:#002651; fill: transparent;
-    }
+    .btn.fancy{ width:170px;height:38px;border-radius:24px;border:3px solid #ff304f;background:none;display:flex;align-items:center;justify-content:center;gap:6px;overflow:hidden;transition: transform .16s cubic-bezier(.2,.8,.2,1), box-shadow .18s ease;}
+    .btn.fancy .lbl, .btn.fancy svg{ position:absolute; letter-spacing:1.2px; font-weight:800; text-transform:uppercase; color:#002651; fill:transparent; }
     .btn.fancy svg{ width:20px; height:20px; }
-    .btn.fancy:hover{
-      transform: translateY(-1px) scale(1.04);
-      box-shadow: 0 8px 18px rgba(2,6,23,.10);
-    }
-    .btn.fancy.animating{
-      width: 54px; border-left: 3px solid #1e2a78; border-bottom: 3px solid #1e2a78;
-      animation: spin 1800ms 200ms forwards ease-in-out;
-    }
+    .btn.fancy:hover{ transform: translateY(-1px) scale(1.04); box-shadow: 0 8px 18px rgba(2,6,23,.10); }
+    .btn.fancy.animating{ width:54px; border-left:3px solid #1e2a78; border-bottom:3px solid #1e2a78; animation: spin 1800ms 200ms forwards ease-in-out; }
     .btn.fancy.animating .lbl{ color: transparent; }
     .btn.fancy.animating svg{ animation: check 500ms 1800ms forwards ease-out; }
-    @keyframes spin {
-      80% { border: 3px solid transparent; border-left: 3px solid #303a52; }
-      100% { transform: rotate(1080deg); border: 3px solid #303a52; }
-    }
-    @keyframes check { to { fill: #17b978; } }
+    @keyframes spin { 80%{border:3px solid transparent;border-left:3px solid #303a52;} 100%{transform: rotate(1080deg); border:3px solid #303a52;} }
+    @keyframes check { to { fill:#17b978; } }
+    @media (max-width:768px){ header{gap:8px;} .search input{min-width:140px;} .toolbar .btn.hide-m{display:none!important} .note .full{display:none} .note .short{display:inline} }
+    [data-theme="dark"] .btn.fancy .lbl, [data-institutional="on"] .btn.fancy .lbl { color:#fff !important; }
 
-    /* ======= Ajustes MOBILE (≤768px) ======= */
-    @media (max-width:768px){
-      header{ gap:8px; }
-      .search input{ min-width: 140px; }
-      .toolbar .btn.hide-m { display: none !important; }
-      .note .full{ display:none; }
-      .note .short{ display:inline; }
-    }
+    /* Badges & tooltip */
+    .attr-badge rect, .proc-badge rect{ fill: var(--brand); rx:10px; }
+    .attr-badge text, .proc-badge text{ fill:#fff; font-size:11px; font-weight:700; }
+    .attr-badge, .proc-badge{ cursor:pointer }
 
-    /* === CAMBIO SOLICITADO: texto blanco en “Descargar PDF” para oscuro e institucional === */
-    [data-theme="dark"] .btn.fancy .lbl,
-    [data-institutional="on"] .btn.fancy .lbl { color:#fff !important; }
+    .attr-tooltip{
+      position:absolute; display:none; z-index:6; max-width:360px; min-width:260px;
+      background: var(--card); color: var(--text);
+      border: 1px solid var(--stroke); border-radius: 12px; box-shadow: var(--shadow);
+      padding: 12px 14px; line-height: 1.35; pointer-events:auto;
+    }
+    .attr-tooltip h4{ margin:0 0 8px; font-size:13px }
+    .attr-tooltip ol{ margin:0; padding-left:18px; max-height:260px; overflow:auto }
+    .attr-tooltip li{ margin:6px 0; font-size:12.5px }
+    .attr-tooltip code{ font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; }
+    .attr-tooltip .hint{ margin-top:8px; font-size:11px; color:var(--muted) }
   </style>
 </head>
 <body>
@@ -229,21 +161,21 @@
     </div>
 
     <div class="toolbar">
-      <!-- Estos se OCULTAN en móvil -->
       <button class="btn hide-m" id="btn-inst" title="Aplicar colores institucionales">Modo institucional</button>
       <button class="btn hide-m" id="btn-theme" title="Alternar claro/oscuro">Modo oscuro</button>
+
+      <!-- Toggle global de tooltips A/P -->
+      <button class="btn hide-m" id="btn-tooltips" title="Mostrar/ocultar badges de Atribuciones y Procedimientos">Atribuciones y Procedimientos</button>
+
       <button class="btn hide-m" id="btn-expand">Expandir todo</button>
       <button class="btn hide-m" id="btn-collapse">Colapsar todo</button>
-      <button class="btn hide-m" id="btn-fit">Ajustar</button>
 
-      <!-- Este permanece visible (móvil y desktop) -->
       <button class="btn fancy noselect" id="btn-download" title="Descargar PDF del organigrama">
         <span class="lbl">Descargar PDF</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M0 11c2.761.575 6.312 1.688 9 3.438 3.157-4.23 8.828-8.187 15-11.438-5.861 5.775-10.711 12.328-14 18.917-2.651-3.766-5.547-7.271-10-10.917z"/></svg>
       </button>
     </div>
 
-    <!-- Nota: larga en desktop, corta en mobile -->
     <div class="note">
       <span class="full">Dirección de Procesos Administrativos de Obras | Subdirección de Implementación de Manuales y Procedimientos de Obra</span>
       <span class="short">DPAO | SIMPO</span>
@@ -256,9 +188,8 @@
     <div class="hint">Haz clic fuera del diagrama y arrastra para ajustar la posición. Usa la rueda para hacer zoom.</div>
   </div>
 
-  <!-- JSON embebido (TU DATA) -->
-  <script>
-    const data = {
+   <script>
+    window.ARTF_DATA = {
       "name": "Titular de la Agencia",
       "acrónimo": "Titular",
       "atributos": "",
@@ -905,12 +836,27 @@
               "children": [
                 {
                   "name": "Dirección de Procesos Administrativos de Obras", "acrónimo": "DPAO",
+                  "atributos": [
+                          "Dar seguimiento al macroproceso en materia de obra pública y servicios relacionados realizadas por las direcciones generales.",
+                          "Llevar un registro de los insumos y productos generados por las áreas administrativas de la Coordinación General de Construcción de Vías y Trenes derivados del macroproceso en materia de obra pública y servicios relacionados.",
+                          "Procesar la información y correspondencia recibida en la Coordinación para su registro y archivo.",
+                          "Realizar la recepción, seguimiento, distribución y asignación de la correspondencia interna y externa de la Oficina de la Dirección de Procesos Administrativos de Obras, para su atención oportuna por las Unidades Administrativas y de Apoyo Técnico‑Operativo.",
+                          "Analizar la información de los procedimientos de obras de un proyecto ferroviario para identificar desviaciones e instruir soluciones inmediatas a puntos críticos según los objetivos establecidos.",
+                          "Mantener actualizados los informes emitidos por la Coordinación General de Construcción de Vías y Trenes.",
+                          "Las demás funciones que le sean conferidas por su superior jerárquico en el ámbito de su competencia."
+                          ],
+                          "procedimientos": [
+                            " PRE-ARTF-DPAO-01-25 ",
+                            " PRE-ARTF-DPAO-02-25 ",
+                            " PRE-ARTF-DPAO-03-25 ",
+                            " PRE-ARTF-DPAO-04-25 "
+                          ],
                   "children": [
                     {
                       "name": "Subdirección de Implementación de Manuales y Procedimientos de Obras", "acrónimo": "SIMPO",
                       "children": [
                         {"name": "Jefatura de Departamento de Implementación de Manuales y Procedimientos de Obra \"A\"", "acrónimo": "JDIMPOA"},
-                        {"name": "Jefatura de Departamento de Implementación de Manuales y Procedimientos de Obra \"B\"", "acrónimo": "JDIMPOB"}
+                        {"name": "Jefatura de Departamento de Implementación de Manuales y Procedimientos de Obra \"B\"", "acrónimo": "JDIMPOB",}
                       ]
                     }
                   ]
@@ -935,22 +881,28 @@
     };
   </script>
 
-  <!-- LÓGICA D3 + UI -->
   <script>
   (function () {
     "use strict";
 
-    const ORG_X_OFFSET = -450;    // offset horizontal global
-    const dx = 66, dy = 360;
-    const MAX_TEXT_W = 270, PAD_X = 16, PAD_BOTTOM = 12, BADGE_H = 18, BADGE_PAD = 8,
-          PAD_TOP = BADGE_H + BADGE_PAD + 8, DEFAULT_W = MAX_TEXT_W + PAD_X*2, DEFAULT_H = 60;
-
-    const dataRef = data;
+    const ORG_X_OFFSET = -450;
+    const dx = 66, dy = 420;
+    const MAX_TEXT_W = 270, PAD_X = 16;
 
     const host = document.getElementById('chart');
     const resultsEl = document.getElementById('results');
     const inputEl = document.getElementById('q');
     const listEl  = document.getElementById('acro-list');
+
+    // Data externa
+    const dataRef = (window.ARTF_DATA || (typeof data !== 'undefined' ? data : null));
+    if (!dataRef || typeof dataRef !== 'object'){
+      document.getElementById('no-data').style.display = 'flex';
+      console.warn('Falta cargar la data (window.ARTF_DATA o const data).');
+      return;
+    } else {
+      document.getElementById('no-data').style.display = 'none';
+    }
 
     const svg  = d3.select(host).append('svg');
     const gRoot = svg.append('g');
@@ -958,14 +910,61 @@
     const gLinks     = gRoot.append('g').attr('class','links');
     const gNodes     = gRoot.append('g').attr('class','nodes');
 
-    // ZOOM + transform helpers
-    const zoom = d3.zoom().scaleExtent([0.5, 2.6]).on('zoom', (ev)=> gRoot.attr('transform', ev.transform));
-    svg.call(zoom);
-    let HOME = null; // guardaremos el transform "home" exacto del auto-fit
+    /* ======= Estado global: mostrar badges A/P ======= */
+    let showToolBadges = false; // OFF por defecto
 
-    function applyTransform(t, duration=420){
-      svg.transition().duration(duration).ease(d3.easeCubicOut).call(zoom.transform, t);
+    // ===== Tooltip global (DIV) anclable =====
+    const tooltip = d3.select('#chart').append('div').attr('class','attr-tooltip');
+    let pinned = null;          // { id, type: 'attr'|'proc' }
+    let activeAnchorEl = null;  // HTMLElement del badge activo (hover o pin)
+    const tooltipVisible = () => tooltip.style('display') !== 'none';
+
+    function hideTooltip(){
+      tooltip.style('display','none').html('');
+      activeAnchorEl = null;
     }
+    function clearPinned(){
+      pinned = null;
+      d3.selectAll('.attr-badge,.proc-badge').classed('pinned', false);
+      hideTooltip();
+    }
+    function positionTooltipFor(anchorEl){
+      if (!anchorEl || !anchorEl.getBoundingClientRect) return hideTooltip();
+      const wrap = document.getElementById('chart').getBoundingClientRect();
+      const r = anchorEl.getBoundingClientRect();
+      const left = r.left - wrap.left;
+      const top  = r.bottom - wrap.top + 8;
+      tooltip.style('left', Math.round(left)+ 'px').style('top', Math.round(top)+ 'px');
+    }
+    function setTooltip(html, anchorEl, makePinned){
+      tooltip.html(html).style('display','block');
+      activeAnchorEl = anchorEl || null;
+      positionTooltipFor(anchorEl);
+      if (makePinned){ d3.select(anchorEl).classed('pinned', true); }
+    }
+    function getNodeGroupById(id){ return gNodes.selectAll('g.node').filter(n => n.id === id); }
+    function getBadgeEl(id, type){
+      const g = getNodeGroupById(id);
+      if (g.empty()) return null;
+      const sel = g.select(type==='attr' ? 'g.attr-badge' : 'g.proc-badge');
+      return sel.empty() ? null : sel.node();
+    }
+    function followAnchor(){
+      if (!tooltipVisible()) return;
+      let anchor = activeAnchorEl;
+      if (pinned){ anchor = getBadgeEl(pinned.id, pinned.type); }
+      if (!anchor || !document.contains(anchor)){ clearPinned(); return; }
+      positionTooltipFor(anchor);
+    }
+
+    // Zoom (tooltip sigue)
+    const zoom = d3.zoom().scaleExtent([0.5, 2.6]).on('zoom', (ev)=> {
+      gRoot.attr('transform', ev.transform);
+      followAnchor();
+    });
+    svg.call(zoom);
+    let HOME = null;
+    function applyTransform(t, duration=420){ svg.transition().duration(duration).ease(d3.easeCubicOut).call(zoom.transform, t); }
 
     function css(varName, fallback){ return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || fallback; }
     function getDepthPalette(){ return [css('--brand','#691c32'), css('--ana1','#69631C'), css('--ana2','#1C5669'), css('--ana3','#BE7288'), css('--ana4','#B3DBE8')]; }
@@ -977,7 +976,7 @@
     root.descendants().forEach(d => { d._children = d.children; d.children = null; });
     root.children = root._children; root._children = null;
 
-    function wrap(sel, text, maxWidth, lineH){
+    function wrap(sel, text, maxWidth){
       const words = (text||'').split(/\s+/).filter(Boolean);
       sel.text(null);
       let line=[], tspan = sel.append('tspan').attr('x', PAD_X);
@@ -993,10 +992,43 @@
     }
 
     const getAcr = d => (d?.data?.["acrónimo"] ?? d?.data?.["acronimo"] ?? "").toString().trim();
-    function dataKidsCount(d){ const kids = d?.data?.children; return Array.isArray(kids) ? kids.length : 0; }
-    function hasDataKids(d){ return dataKidsCount(d) > 0; }
+    const dataKidsCount = d => Array.isArray(d?.data?.children) ? d.data.children.length : 0;
+    const hasDataKids = d => dataKidsCount(d) > 0;
 
-    /* ======= MODO INSTITUCIONAL ======= */
+    // Parsers de atributos / procedimientos
+    function getAtributosArrayFromData(data){
+      let a = data?.atributos ?? data?.atributo ?? [];
+      if (Array.isArray(a)) return a.filter(x => !!x && String(x).trim());
+      if (typeof a === 'string'){
+        const s = a.trim(); if(!s) return [];
+        const parts = s.split(/\s*(?:[IVXLCDM]+\.|\d+\.)\s+/g).filter(Boolean);
+        return parts.length ? parts : [s];
+      }
+      return [];
+    }
+    function getProcedimientosArrayFromData(data){
+      let p = data?.procedimientos ?? data?.procedimiento ?? [];
+      if (Array.isArray(p)) return p.map(x => String(x).trim()).filter(Boolean);
+      if (typeof p === 'string'){
+        const s = p.trim(); if(!s) return [];
+        return s.split(/[\n,;]+/g).map(x => x.trim()).filter(Boolean);
+      }
+      return [];
+    }
+
+    function renderAtribucionesHTML(data){
+      const items = getAtributosArrayFromData(data);
+      const itemsHTML = items.map(x=>`<li>${x}</li>`).join('');
+      const acr = data["acrónimo"] || data["acronimo"] || data.name || '';
+      return `<h4>Atribuciones de <strong>${acr}</strong></h4><ol type="I">${itemsHTML}</ol>`;
+    }
+    function renderProcedimientosHTML(data){
+      const items = getProcedimientosArrayFromData(data);
+      const itemsHTML = items.map(x=>`<li><code>${x}</code></li>`).join('');
+      const acr = data["acrónimo"] || data["acronimo"] || data.name || '';
+      return `<h4>Procedimientos de <strong>${acr}</strong></h4><ol>${itemsHTML}</ol>`;
+    }
+
     function nodeColor(d){
       const BRAND = css('--brand', '#691c32');
       const isInst = document.documentElement.getAttribute('data-institutional') === 'on';
@@ -1012,7 +1044,7 @@
       return DEPTH_PAL[idx];
     }
 
-    const rightX = d => (d.y + ((d._box && d._box.w) || DEFAULT_W));
+    const rightX = d => (d.y + ((d._box && d._box.w) || (MAX_TEXT_W + PAD_X*2 + 32)));
     const leftX  = d => d.y;
     const elbow = (s, t) => {
       const sx = rightX(s), sy = s.x;
@@ -1021,193 +1053,70 @@
       return `M ${sx},${sy} C ${mx},${sy} ${mx},${ty} ${tx},${ty}`;
     };
 
+    // Cerrar tooltip si se colapsa el padre
+    function subtreeHasNodeId(ancestor, id){
+      let found = false;
+      (function walk(n){
+        if (n.id === id) { found = true; return; }
+        const kids = (n.children || n._children) || [];
+        for (const k of kids){ if (found) break; walk(k); }
+      })(ancestor);
+      return found;
+    }
+    function forceCloseIfInSubtree(ancestor){
+      if (pinned && subtreeHasNodeId(ancestor, pinned.id)) clearPinned();
+      if (!pinned && activeAnchorEl){
+        const key = activeAnchorEl.getAttribute?.('data-key') || '';
+        const idFromKey = key.split('|')[0] || '';
+        if (idFromKey && subtreeHasNodeId(ancestor, idFromKey)) hideTooltip();
+      }
+    }
+
     function toggle(d){
       if (!hasDataKids(d)) return;
-      if (Array.isArray(d.children) && d.children.length){ d._children = d.children; d.children = null; }
+      const wasOpen = Array.isArray(d.children) && d.children.length;
+      if (wasOpen){ d._children = d.children; d.children = null; }
       else { d.children = d._children; d._children = null; }
+      if (wasOpen) forceCloseIfInSubtree(d);
     }
 
-    function flattenAll(node){
-      const out = [];
-      (function walk(n){ out.push(n); const kids = (n.children || n._children) || []; for (const k of kids) walk(k); })(node);
-      return out;
-    }
-
-    function norm(s){
-      return (s || "").toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
-    }
-
-    function findByAcr(acr){
-      const target = norm(acr);
-      const all = flattenAll(root);
-      for (const n of all){ if (norm(getAcr(n)) === target) return n; }
-      return null;
-    }
-
-    /* === Helpers de desplazamiento vertical (eje X) === */
-    function shiftSubtreeY(node, delta){ if (!delta || !node) return; node.descendants().forEach(n => { n.x += delta; }); }
-    function shiftDescendantsY(node, delta){
-      if (!delta || !node) return;
-      (function walk(n){
-        if (!n.children) return;
-        n.children.forEach(c => { c.x += delta; walk(c); });
-      })(node);
-    }
-    function shiftSubtreeH(node, delta){ node.descendants().forEach(n => { n.y += delta; }); }
-
-    function subtreeExtentX(node){
-      let min = +Infinity, max = -Infinity;
-      (function walk(n){ min=Math.min(min,n.x); max=Math.max(max,n.x); if(n.children) n.children.forEach(walk); })(node);
-      return {min, max};
-    }
-    function descendantsExtentX_exclSelf(node){
-      let min = +Infinity, max = -Infinity;
-      (function walk(n){
-        if (!n.children) return;
-        n.children.forEach(c => { min=Math.min(min,c.x); max=Math.max(max,c.x); walk(c); });
-      })(node);
-      return {min, max};
-    }
-
-    /* Alineaciones específicas CGCVT */
-    function adjustMidTier(){
-      const cg = findByAcr('CGCVT'); if (!cg || !cg.parent) return;
-      const tier1Y = (cg.parent.y || 0) + dy;
-      const midY   = (cg.parent.y || 0) + dy/2;
-      cg.y = midY;
-      (cg.children||cg._children||[]).forEach(k => { if (cg.children) k.y = tier1Y; });
-    }
-    function applyOneSlotDownForCGCVT(){
-      const cg = findByAcr('CGCVT'); if (!cg) return;
-      if (cg.children && cg.children.length){ shiftSubtreeY(cg, dx); }
-    }
-    function clampCGCVTChildrenBelowSP(){
-      const cg = findByAcr('CGCVT'); const sp = findByAcr('SP');
-      if (!cg || !sp) return;
-      if (!(cg.children && cg.children.length)) return;
-      const spExt = subtreeExtentX(sp);
-      const kidsExt = descendantsExtentX_exclSelf(cg);
-      if (!isFinite(kidsExt.min)) return;
-      const margin = dx;
-      const minPermitido = spExt.max + margin;
-      if (kidsExt.min < minPermitido){
-        const delta = minPermitido - kidsExt.min;
-        shiftDescendantsY(cg, delta);
-      }
-    }
-    function separateCGCVTGrandchildren(gap = dx * 2.2){
-      const cg = findByAcr('CGCVT'); if (!cg) return;
-      const kids = (cg.children || cg._children || []);
-      if (!kids.length) return;
-      const items = kids.map(k => {
-        const ext = descendantsExtentX_exclSelf(k);
-        if (!isFinite(ext.min) || !isFinite(ext.max)) { ext.min = k.x; ext.max = k.x; }
-        return { node:k, ext };
-      }).sort((a,b) => a.ext.min - b.ext.min);
-      for (let i=1; i<items.length; i++){
-        const prev = items[i-1];
-        const cur  = items[i];
-        const needMin = prev.ext.max + gap;
-        if (cur.ext.min < needMin){
-          const delta = needMin - cur.ext.min;
-          shiftDescendantsY(cur.node, delta);
-        }
-      }
-    }
-
-    /* === Hijos de DGT, DGO y DGCGIO a una sola columna (alineación) === */
-    function promoteChildrenOneColumnUnder(acrList){
-      acrList.forEach(acr => {
-        const top = findByAcr(acr);
-        if (!top) return;
-        const kids = (top.children || top._children || []);
-        kids.forEach(ch => {
-          const desiredY = top.y + dy;
-          const delta    = desiredY - ch.y;
-          shiftSubtreeH(ch, delta);
-        });
-      });
-    }
-
-    /* === Mover un único nodo por ACRÓNIMO === */
-    function nudgeVerticalByAcr(acr, deltaPx){
-      const n = findByAcr(acr);
-      if (!n || !deltaPx) return;
-      shiftSubtreeY(n, deltaPx);
-    }
-    /* === Mover un único nodo por NOMBRE exacto === */
-    function findByName(name){
-      const target = norm(name);
-      const all = flattenAll(root);
-      for (const n of all){
-        const nm = (n.data?.name || '');
-        if (norm(nm) === target) return n;
-      }
-      return null;
-    }
-    function nudgeVerticalByName(name, deltaPx){
-      const n = findByName(name);
-      if (!n || !deltaPx) return;
-      shiftSubtreeY(n, deltaPx);
-    }
-
-    /* === Separar NIETOS de un acrónimo (simétrico ±gap) === */
-    function separateGrandchildrenUnderAcr(acr, gapPx){
-      const top = findByAcr(acr);
-      if (!top) return;
-      const children = (top.children || top._children || []);
-      let grandkids = [];
-      children.forEach(ch => {
-        const arr = (ch.children || ch._children || []);
-        grandkids = grandkids.concat(arr);
-      });
-      if (grandkids.length < 2) return;
-      grandkids.sort((a,b) => a.x - b.x);
-      const base = ((grandkids.length - 1) / 2) * gapPx;
-      grandkids.forEach((g, i) => {
-        const delta = i * gapPx - base;
-        shiftSubtreeY(g, delta);
-      });
-    }
+    // Helpers layout
+    function norm(s){ return (s || "").toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim(); }
+    function flattenAll(node){ const out=[]; (function w(n){ out.push(n); (n.children||n._children||[]).forEach(w); })(node); return out; }
+    function findByAcr(acr){ const t=norm(acr); for (const n of flattenAll(root)){ if (norm(getAcr(n))===t) return n; } return null; }
+    function shiftSubtreeY(node, delta){ if (!delta||!node) return; node.descendants().forEach(n=>{ n.x += delta; }); }
+    function shiftDescendantsY(node, delta){ if (!delta||!node) return; (function w(n){ if(!n.children) return; n.children.forEach(c=>{ c.x+=delta; w(c); }); })(node); }
+    function shiftSubtreeH(node, delta){ node.descendants().forEach(n=>{ n.y += delta; }); }
+    function subtreeExtentX(node){ let min=+Infinity,max=-Infinity; (function w(n){ min=Math.min(min,n.x); max=Math.max(max,n.x); (n.children||[]).forEach(w); })(node); return {min,max}; }
+    function descendantsExtentX_exclSelf(node){ let min=+Infinity,max=-Infinity; (function w(n){ if(!n.children) return; n.children.forEach(c=>{min=Math.min(min,c.x);max=Math.max(max,c.x); w(c);}); })(node); return {min,max}; }
+    function adjustMidTier(){ const cg=findByAcr('CGCVT'); if(!cg||!cg.parent) return; const tier1Y=(cg.parent.y||0)+dy; const midY=(cg.parent.y||0)+dy/2; cg.y=midY; (cg.children||cg._children||[]).forEach(k=>{ if(cg.children) k.y=tier1Y; }); }
+    function applyOneSlotDownForCGCVT(){ const cg=findByAcr('CGCVT'); if(!cg) return; if (cg.children&&cg.children.length){ shiftSubtreeY(cg, dx); } }
+    function clampCGCVTChildrenBelowSP(){ const cg=findByAcr('CGCVT'); const sp=findByAcr('SP'); if(!cg||!sp) return; if(!(cg.children&&cg.children.length)) return; const spExt=subtreeExtentX(sp); const kidsExt=descendantsExtentX_exclSelf(cg); if(!isFinite(kidsExt.min)) return; const margin=dx; const minPermitido=spExt.max+margin; if(kidsExt.min<minPermitido){ shiftDescendantsY(cg, minPermitido-kidsExt.min); } }
+    function separateCGCVTGrandchildren(gap=dx*2.2){ const cg=findByAcr('CGCVT'); if(!cg) return; const kids=(cg.children||cg._children||[]); if(!kids.length) return; const items=kids.map(k=>{ const ext=descendantsExtentX_exclSelf(k); if(!isFinite(ext.min)||!isFinite(ext.max)){ext.min=k.x;ext.max=k.x;} return {node:k,ext}; }).sort((a,b)=>a.ext.min-b.ext.min); for(let i=1;i<items.length;i++){ const prev=items[i-1],cur=items[i]; const needMin=prev.ext.max+gap; if (cur.ext.min<needMin) shiftDescendantsY(cur.node, needMin-cur.ext.min); } }
+    function promoteChildrenOneColumnUnder(acrList){ acrList.forEach(acr=>{ const top=findByAcr(acr); if(!top) return; (top.children||top._children||[]).forEach(ch=>{ const desiredY=top.y+dy; shiftSubtreeH(ch, desiredY-ch.y); }); }); }
+    function findByName(name){ const t=norm(name); for (const n of flattenAll(root)){ const nm=(n.data?.name||''); if (norm(nm)===t) return n; } return null; }
+    function separateGrandchildrenUnderAcr(acr,gapPx){ const top=findByAcr(acr); if(!top) return; const children=(top.children||top._children||[]); let grandkids=[]; children.forEach(ch=>{ const arr=(ch.children||ch._children||[]); grandkids=grandkids.concat(arr); }); if(grandkids.length<2) return; grandkids.sort((a,b)=>a.x-b.x); const base=((grandkids.length-1)/2)*gapPx; grandkids.forEach((g,i)=>{ shiftSubtreeY(g, i*gapPx - base); }); }
 
     function update(source){
       d3.tree().nodeSize([dx, dy]).separation((a,b)=> (a.parent===b.parent ? 1.2 : 1.6))(root);
 
-      adjustMidTier();
-      applyOneSlotDownForCGCVT();
-
-      /* Mantener ajustes previos */
+      adjustMidTier(); applyOneSlotDownForCGCVT();
       promoteChildrenOneColumnUnder(['DGT','DGO','DGCGIO']);
       separateCGCVTGrandchildren(dx * 2.2);
       clampCGCVTChildrenBelowSP();
 
-      /* === AJUSTES SOLICITADOS PREVIOS === */
-      nudgeVerticalByAcr('JDIMPOA', -15);   // subir 15
-      nudgeVerticalByAcr('JDAOA',  -15);    // subir 15
-      nudgeVerticalByAcr('DGT',     10);    // bajar 10
-      nudgeVerticalByAcr('EADGVSR', -10);   // subir 10
-      separateGrandchildrenUnderAcr('DGSPAE', 10); // separar nietos 10px
-      nudgeVerticalByAcr('SDMSA',   10);    // bajar 10
-      nudgeVerticalByAcr('JDDPF',   10);    // bajar 10
-      nudgeVerticalByAcr('SPEPF',   10);    // bajar 10
-      nudgeVerticalByAcr('JDASI',   10);    // bajar 10
-      nudgeVerticalByName('Jefatura de Departamento de Asuntos Laborales, Civiles, Agrarios y Penales', 20); // bajar 20
-      nudgeVerticalByAcr('SGTSOCO', 10);    // bajar 10
-      nudgeVerticalByAcr('JDSMOOF', 10);    // bajar 10
-
-      /* === SUBIR 10px CRIAC === */
-      nudgeVerticalByAcr('CRIAC',  -10);
-      nudgeVerticalByName('Coordinación de Relaciones Institucionales con Asignatarios y Concesionarios', -10);
-
-      /* === "B" +5px, "C" +10px (ya aplicados) === */
-      nudgeVerticalByAcr('SPSPEB', 5);
-      nudgeVerticalByName('Subdirección de Programación y Seguimiento de Proyectos Estratégicos "B"', 5);
-      nudgeVerticalByAcr('SPSPEC', 10);
-      nudgeVerticalByName('Subdirección de Programación y Seguimiento de Proyectos Estratégicos "C"', 10);
-
-      /* === NUEVO: Enlace Logístico BAJAR 10px === */
-      nudgeVerticalByAcr('EL', 10);
-      nudgeVerticalByName('Enlace Logístico', 10);
+      // Ajustes verticales específicos
+      function nudgeAcr(acr,delta){ const n=findByAcr(acr); if(n) shiftSubtreeY(n, delta); }
+      function nudgeName(name,delta){ const n=findByName(name); if(n) shiftSubtreeY(n, delta); }
+      nudgeAcr('JDIMPOA', -15); nudgeAcr('JDAOA', -15); nudgeAcr('DGT', 10); nudgeAcr('EADGVSR', -10);
+      separateGrandchildrenUnderAcr('DGSPAE', 10);
+      nudgeAcr('SDMSA', 10); nudgeAcr('JDDPF', 10); nudgeAcr('SPEPF', 10); nudgeAcr('JDASI', 10);
+      nudgeName('Jefatura de Departamento de Asuntos Laborales, Civiles, Agrarios y Penales', 20);
+      nudgeAcr('SGTSOCO', 10); nudgeAcr('JDSMOOF', 10);
+      nudgeAcr('CRIAC', -10); nudgeName('Coordinación de Relaciones Institucionales con Asignatarios y Concesionarios', -10);
+      nudgeAcr('SPSPEB', 5); nudgeName('Subdirección de Programación y Seguimiento de Proyectos Estratégicos "B"', 5);
+      nudgeAcr('SPSPEC', 10); nudgeName('Subdirección de Programación y Seguimiento de Proyectos Estratégicos "C"', 10);
+      nudgeAcr('EL', 10); nudgeName('Enlace Logístico', 10);
 
       const nodes = root.descendants();
       const links = root.links();
@@ -1242,38 +1151,18 @@
       countG.append('text').attr('class','count-tx');
 
       function refreshCard(g, d){
-        const lines = wrap(g.select('.node-title'), (d.data.name||''), 270, 16);
+        const lines = wrap(g.select('.node-title'), (d.data.name||''), MAX_TEXT_W);
         const titleH = lines * 16;
-
-        const meta = (d.data.atributos||'').trim();
+        const rawAttr = d.data.atributos ?? d.data.atributo ?? '';
+        const meta = Array.isArray(rawAttr) ? '' : (rawAttr || '').toString().trim();
         let subH = 0;
-        if (meta){ g.select('.node-sub').text(meta).attr('x', 16).attr('dy', 16); subH = 18; }
+        if (meta){ g.select('.node-sub').text(meta).attr('x', PAD_X).attr('dy', 16); subH = 18; }
         else { g.select('.node-sub').text(''); }
 
-        const contentW = 270 + 32;
-        const blockH = Math.max(48 + titleH + subH + 12, 54);
-
-        g.select('.node-rect').attr('x', 0).attr('y', -blockH/2).attr('width', contentW).attr('height', blockH);
-        g.select('.node-title').attr('x', 16).attr('y', -blockH/2 + 48 + 12);
-        if (meta){ g.select('.node-sub').attr('y', -blockH/2 + 48 + titleH + 12); }
-
-        g.select('.hit').attr('x', -10).attr('y', -blockH/2 - 6).attr('width', contentW + 20).attr('height', blockH + 12);
-
+        const kids = dataKidsCount(d);
         const acr = getAcr(d);
         g.select('.badge-text').text(acr);
-        const acrW = Math.max(12, g.select('.badge-text').node().getComputedTextLength());
-
-        const kids = dataKidsCount(d);
-        const isOpen = Array.isArray(d.children) && d.children.length > 0;
-
-        if (kids > 0){
-          const cx = contentW - 12, cy = 0;
-          const path = isOpen ? `M ${cx-6},${cy-3} L ${cx},${cy+3} L ${cx+6},${cy-3} Z` : `M ${cx-6},${cy+3} L ${cx},${cy-3} L ${cx+6},${cy+3} Z`;
-          g.select('.toggle').attr('d', path);
-        } else {
-          g.select('.toggle').attr('d','');
-        }
-
+        const acrTextW = Math.max(12, g.select('.badge-text').node().getComputedTextLength());
         let pillW = 0, pillH = 16;
         if (kids > 0){
           g.select('.count-pill').style('display', null);
@@ -1284,49 +1173,172 @@
           g.select('.count-tx').text('');
           g.select('.count-pill').style('display','none');
         }
+        const wAcr = Math.max(28, acrTextW + 12) + (kids>0 ? (pillW + 8) : 0);
 
-        let wBadge = Math.max(28, acrW + 12) + (kids>0 ? (pillW + 8) : 0);
-        const maxBadge = contentW - 8; if (wBadge > maxBadge) wBadge = maxBadge;
+        // Datos badges
+        const attrs = getAtributosArrayFromData(d.data);
+        const procs = getProcedimientosArrayFromData(d.data);
 
-        const bx = contentW - wBadge - 8;
+        // Crear grupos si aplica el modo
+        let attrG = g.select('g.attr-badge');
+        let procG = g.select('g.proc-badge');
+
+        // Limpia siempre el contenido previo de grupos existentes
+        if (!attrG.empty()) attrG.selectAll('*').remove();
+        if (!procG.empty()) procG.selectAll('*').remove();
+
+        let wAttr = 0, wProc = 0;
+
+        if (showToolBadges && attrs.length){
+          if (attrG.empty()) attrG = g.append('g').attr('class','attr-badge').attr('tabindex',0);
+          const labelAttr = `Atribuciones (${attrs.length})`;
+          const tmpA = attrG.append('text').attr('font-size',11).attr('font-weight',700).text(labelAttr).attr('visibility','hidden');
+          wAttr = Math.ceil(tmpA.node().getComputedTextLength()) + 14; tmpA.remove();
+          attrG.append('rect').attr('width', wAttr).attr('height', 20);
+          attrG.append('text').attr('x', wAttr/2).attr('y', 14).attr('text-anchor','middle').text(labelAttr);
+        } else { if (!attrG.empty()) attrG.remove(); attrG = null; }
+
+        if (showToolBadges && procs.length){
+          if (procG.empty()) procG = g.append('g').attr('class','proc-badge').attr('tabindex',0);
+          const labelProc = `Procedimientos (${procs.length})`;
+          const tmpP = procG.append('text').attr('font-size',11).attr('font-weight',700).text(labelProc).attr('visibility','hidden');
+          wProc = Math.ceil(tmpP.node().getComputedTextLength()) + 14; tmpP.remove();
+          procG.append('rect').attr('width', wProc).attr('height', 20);
+          procG.append('text').attr('x', wProc/2).attr('y', 14).attr('text-anchor','middle').text(labelProc);
+        } else { if (!procG.empty()) procG.remove(); procG = null; }
+
+        // Ancho dinámico
+        const gap = 6, marginSide = 8;
+        const baseContentW = MAX_TEXT_W + PAD_X*2 + 32;
+        let contentW = baseContentW;
+
+        if (showToolBadges){
+          const badgesTotal = (procG? wProc:0) + (attrG? ((procG?gap:0) + wAttr):0) + ((procG||attrG)?gap:0) + wAcr;
+          const neededW = marginSide + badgesTotal + marginSide;
+          contentW = Math.max(baseContentW, neededW);
+        }
+
+        const blockH = Math.max(48 + titleH + subH + 12, 54);
+
+        g.select('.node-rect').attr('x', 0).attr('y', -blockH/2).attr('width', contentW).attr('height', blockH);
+        g.select('.node-title').attr('x', PAD_X).attr('y', -blockH/2 + 48 + 12);
+        if (meta){ g.select('.node-sub').attr('y', -blockH/2 + 48 + titleH + 12); }
+        g.select('.hit').attr('x', -10).attr('y', -blockH/2 - 6).attr('width', contentW + 20).attr('height', blockH + 12);
+
+        // Acrónimo a la derecha
         const by = -blockH/2 + 8;
-
-        g.select('.badge-bg').attr('x', bx).attr('y', by).attr('width', wBadge).attr('height', 18);
-        g.select('.badge-text').attr('x', bx + 6).attr('y', by + 18 - 5);
+        let bx = contentW - wAcr - marginSide;
+        g.select('.badge-bg').attr('x', bx).attr('y', by).attr('width', wAcr).attr('height', 18);
+        g.select('.badge-text').attr('x', bx + 6).attr('y', by + 13);
 
         if (kids > 0){
-          const cx = bx + wBadge - pillW - 6;
+          const cx = bx + wAcr - pillW - 6;
           const cy = by + (18 - pillH)/2;
           g.select('.count-pill').attr('transform', `translate(${cx},${cy})`);
-          g.select('.count-pill rect')
-            .attr('x',0).attr('y',0).attr('width', pillW).attr('height', pillH)
-            .attr('fill', nodeColor(d)).attr('stroke', '#fff').attr('stroke-width', 1.2);
+          g.select('.count-pill rect').attr('x',0).attr('y',0).attr('width', pillW).attr('height', pillH)
+            .attr('fill', nodeColor(d)).attr('stroke','#fff').attr('stroke-width',1.2);
           g.select('.count-tx').attr('x', pillW/2).attr('y', pillH/2);
         }
+
+        // Chevron
+        const cxToggle = contentW - 12, cyToggle = 0;
+        const isOpen = Array.isArray(d.children) && d.children.length > 0;
+        const path = isOpen ? `M ${cxToggle-6},${cyToggle-3} L ${cxToggle},${cyToggle+3} L ${cxToggle+6},${cyToggle-3} Z`
+                            : `M ${cxToggle-6},${cyToggle+3} L ${cxToggle},${cyToggle-3} L ${cxToggle+6},${cyToggle+3} Z`;
+        g.select('.toggle').attr('d', path);
+
+        // Posicionar badges: [Proc] [Attr] [ACR] si están activos
+        if (showToolBadges){
+          let xAcr = bx;
+          let xAttr = xAcr - (attrG ? (gap + (wAttr||0)) : 0);
+          let xProc = xAttr - (procG ? (gap + (wProc||0)) : 0);
+
+          if (procG && xProc < marginSide){
+            const shift = marginSide - xProc;
+            xProc += shift; xAttr += shift; xAcr += shift;
+            bx = xAcr;
+            g.select('.badge-bg').attr('x', xAcr);
+            g.select('.badge-text').attr('x', xAcr + 6);
+            if (kids > 0){
+              const cx = xAcr + wAcr - pillW - 6;
+              const cy = by + (18 - pillH)/2;
+              g.select('.count-pill').attr('transform', `translate(${cx},${cy})`);
+            }
+          }
+          if (procG) procG.attr('transform', `translate(${xProc},${by})`);
+          if (attrG) attrG.attr('transform', `translate(${xAttr},${by})`);
+        }
+
+        // Eventos de badges (con stopPropagation para no abrir hijos)
+        function bindBadgeEvents(sel, type){
+          if (!sel) return;
+          const key = `${d.id}|${type}`;
+          sel.attr('data-key', key)
+            .on('mouseenter', (evt)=>{
+              evt.stopPropagation();
+              if (!showToolBadges) return;
+              if (pinned && !(pinned.id===d.id && pinned.type===type)) return;
+              const html = (type==='attr') ? renderAtribucionesHTML(d.data) : renderProcedimientosHTML(d.data);
+              setTooltip(html, evt.currentTarget, false);
+            })
+            .on('mouseleave', (evt)=>{
+              evt.stopPropagation();
+              if (pinned && pinned.id===d.id && pinned.type===type) return;
+              hideTooltip();
+            })
+            .on('click', (evt)=>{
+              evt.stopPropagation();
+              if (!showToolBadges) return;
+              const same = pinned && pinned.id===d.id && pinned.type===type;
+              if (same){ clearPinned(); return; }
+              pinned = { id:d.id, type };
+              d3.selectAll('.attr-badge,.proc-badge').classed('pinned', false);
+              d3.select(evt.currentTarget).classed('pinned', true);
+              const html = (type==='attr') ? renderAtribucionesHTML(d.data) : renderProcedimientosHTML(d.data);
+              setTooltip(html, evt.currentTarget, true);
+            })
+            .on('keydown', (evt)=>{
+              if(evt.key==='Enter' || evt.key===' '){
+                evt.preventDefault(); evt.stopPropagation();
+                sel.dispatch('click', {bubbles:true, cancelable:true});
+              }
+            });
+        }
+        bindBadgeEvents(attrG, 'attr');
+        bindBadgeEvents(procG, 'proc');
 
         d._box = { w: contentW, h: blockH };
       }
 
-      enter.each(function(d){ const g = d3.select(this).select('.node-card'); refreshCard(g, d); });
+      enter.each(function(d){ refreshCard(d3.select(this).select('.node-card'), d); });
       const merged = enter.merge(nodeSel);
-      merged.each(function(d){ const g = d3.select(this).select('.node-card'); refreshCard(g, d); });
+      merged.each(function(d){ refreshCard(d3.select(this).select('.node-card'), d); });
 
       merged.transition().duration(420).attr('transform', d => `translate(${d.y},${d.x})`).style('opacity', 1);
       nodeSel.exit().transition().duration(250).attr('transform', _ => `translate(${source.y},${source.x})`).style('opacity', 0).remove();
 
       root.descendants().forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+
+      // Mantener/limpiar tooltip tras render
+      if (!showToolBadges){ clearPinned(); hideTooltip(); }
+      else if (pinned){
+        const anchor = getBadgeEl(pinned.id, pinned.type);
+        if (!anchor){ clearPinned(); }
+        else { activeAnchorEl = anchor; followAnchor(); }
+      } else if (tooltipVisible()){
+        if (!activeAnchorEl || !document.contains(activeAnchorEl)) hideTooltip();
+        else followAnchor();
+      }
     }
 
     function expandAll(d=root){ d.children = d.children || d._children; d._children=null; if (d.children) d.children.forEach(expandAll); }
     function collapseAll(d=root){ if (d.children){ d._children = d.children; d.children = null; } if (d._children) d._children.forEach(collapseAll); }
-    function expandPathTo(node){ let p = node.parent; while (p){ if (!p.children){ p.children = p._children; p._children = null; } p = p.parent; } }
 
     function fitToScreen(pad=60, saveHome=false){
       const bbox = gRoot.node().getBBox();
       const w = host.clientWidth, h = host.clientHeight;
       const scale = Math.min(0.75, Math.max(0.5, Math.min((w - pad*2)/bbox.width, (h - pad*2)/bbox.height)));
-      let tx = (w - bbox.width * scale)/2 - bbox.x * scale;
-      tx += ORG_X_OFFSET;
+      let tx = (w - bbox.width * scale)/2 - bbox.x * scale; tx += ORG_X_OFFSET;
       const ty = (h - bbox.height* scale)/2 - bbox.y * scale;
       const t = d3.zoomIdentity.translate(tx, ty).scale(scale);
       applyTransform(t);
@@ -1379,10 +1391,13 @@
     window.addEventListener('pageshow', () => autoFit());
 
     document.getElementById('btn-expand').onclick = ()=>{ expandAll(); update(root); setTimeout(()=>goHome(), 30); };
-    document.getElementById('btn-collapse').onclick = ()=>{ collapseAll(); root.children = root._children; root._children=null; update(root); setTimeout(()=>goHome(), 30); };
-    document.getElementById('btn-fit').onclick = ()=> goHome();
+    document.getElementById('btn-collapse').onclick = ()=>{
+      collapseAll(); root.children = root._children; root._children=null;
+      clearPinned(); hideTooltip();
+      update(root); setTimeout(()=>goHome(), 30);
+    };
 
-    /* ===== Buscador ===== */
+    // ===== Buscador =====
     const allNodes = (function flattenAll(node){
       const out = [];
       (function walk(n){ out.push(n); const kids = (n.children || n._children) || []; for (const k of kids) walk(k); })(node);
@@ -1392,13 +1407,13 @@
     const indexAcr = new Map();
     const acroSetForList = new Set();
     for (const n of allNodes){
-      const acr = (n?.data?.["acrónimo"] ?? n?.data?.["acronimo"] ?? "").toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
+      const acr = (n?.data?.["acrónimo"] ?? n?.data?.["acronimo"] ?? "").toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
       if (acr){ acroSetForList.add(acr); if (!indexAcr.has(acr)) indexAcr.set(acr, []); indexAcr.get(acr).push(n); }
     }
 
     function refreshDatalist(prefix){
       listEl.innerHTML = '';
-      const q = (prefix || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
+      const q = (prefix || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
       if (!q) return;
       const items = Array.from(acroSetForList).filter(a => a.startsWith(q)).sort();
       for (const acr of items){
@@ -1416,19 +1431,17 @@
 
     function showResults(qRaw){
       clearMatches();
-
-      const query = (qRaw || inputEl.value || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
+      const query = (qRaw || inputEl.value || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
       if (!query){ return; }
 
       let matches = [];
-
-      if (indexAcr.has(query)){ matches = matches.concat(indexAcr.get(query)); }
+      if (indexAcr.has(query)) matches = matches.concat(indexAcr.get(query));
       if (matches.length === 0){
         for (const [acr, arr] of indexAcr){ if (acr.includes(query)) matches = matches.concat(arr); }
       }
       if (matches.length === 0){
         for (const n of allNodes){
-          const nm = (n.data?.name || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
+          const nm = (n.data?.name || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
           if (nm && nm.includes(query)) matches.push(n);
         }
       }
@@ -1472,18 +1485,20 @@
     inputEl.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') showResults(); });
     document.getElementById('btn-clear').onclick = ()=>{ inputEl.value = ''; refreshDatalist(''); clearMatches(); goHome(); };
 
-    /* Tema claro/oscuro + Institucional */
+    // Tema claro/oscuro + institucional
     const htmlEl  = document.documentElement;
     const btnTheme= document.getElementById('btn-theme');
     const btnInst = document.getElementById('btn-inst');
+    const btnTips = document.getElementById('btn-tooltips');
     let baseTheme = 'light';
+
     function setThemeAttr(val){ htmlEl.setAttribute('data-theme', val); }
+
     btnTheme?.addEventListener('click', ()=>{
       baseTheme = (baseTheme === 'light') ? 'dark' : 'light';
       setThemeAttr(baseTheme);
       btnTheme.textContent = (baseTheme === 'dark') ? 'Modo luz' : 'Modo oscuro';
       update(root);
-      // mantener HOME al cambiar tema
       setTimeout(()=> goHome(), 20);
     });
     setThemeAttr(baseTheme);
@@ -1496,7 +1511,19 @@
       setTimeout(()=> goHome(), 20);
     });
 
-    /* === Descargar PDF (captura #chart) con título centrado === */
+    // Toggle global de Tooltips A/P
+    btnTips?.addEventListener('click', ()=>{
+      showToolBadges = !showToolBadges;
+      btnTips.textContent = showToolBadges ? 'Atribuciones y Procedimientos: ON' : 'Atribuciones y Procedimientos';
+      if (!showToolBadges){ clearPinned(); hideTooltip(); }
+      update(root);
+    });
+
+    // Reposicionar tooltip ante resize/scroll
+    window.addEventListener('resize', followAnchor);
+    window.addEventListener('scroll', followAnchor, true);
+
+    // Exportar PDF
     async function exportPDF(){
       const el = document.getElementById('chart');
       const hint = document.querySelector('.hint');
@@ -1504,13 +1531,7 @@
 
       const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#ffffff';
 
-      const canvas = await html2canvas(el, {
-        backgroundColor: bg,
-        scale: 2,
-        useCORS: true,
-        logging: false
-      });
-
+      const canvas = await html2canvas(el, { backgroundColor: bg, scale: 2, useCORS: true, logging: false });
       const imgData = canvas.toDataURL('image/png');
 
       const { jsPDF } = window.jspdf;
@@ -1525,8 +1546,7 @@
       const title = 'Organigrama · ATTRAPI';
       pdf.text(title, pageW/2, 12, { align: 'center' });
 
-      const margin = 10;
-      const topGap = 8;
+      const margin = 10, topGap = 8;
       const maxW = pageW - margin * 2;
       const maxH = pageH - margin * 2 - 8;
 
@@ -1540,7 +1560,7 @@
 
       const t = new Date();
       const pad = n => String(n).padStart(2, '0');
-      const filename = `organigrama-ATRAPPI-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
+      const filename = `organigrama-ATTRAPI-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
 
       pdf.save(filename);
 
@@ -1567,21 +1587,18 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-  <!-- Flowise como módulo -->
+  <!-- ============== AGENTE (Flowise) — esquina inferior derecha ============== -->
   <script>
   (function(){
-    const brand =
-      (getComputedStyle(document.documentElement).getPropertyValue('--brand') || '').trim() ||
-      '#691c32';
+    const brand = (getComputedStyle(document.documentElement).getPropertyValue('--brand') || '').trim() || '#691c32';
 
+    /* Oculta "powered by" y agrega etiqueta de acceso */
     const style = document.createElement('style');
     style.textContent = `
       .flowise-footer,
       .chat-window-footer,
       [data-testid="powered-by"],
-      [aria-label*="Powered by"]{
-        display: none !important;
-      }
+      [aria-label*="Powered by"]{ display:none !important; }
       .chat-label{
         position: fixed; right: 82px; bottom: 30px;
         background: ${brand}; color:#fff; font:700 12px/1 ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
@@ -1624,6 +1641,7 @@
 
     window.openAsistenteARTF = openAssistantWithRetry;
 
+    /* Carga Flowise y coloca el botón en bottom-right */
     window.addEventListener('DOMContentLoaded', () => {
       import('https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js')
         .then(mod => {
@@ -1634,7 +1652,7 @@
             chatflowid: '8f1072cf-0f9d-400e-974e-93d2c3ed6d3a',
             apiHost: 'https://daniel.fixtergeek.com',
             theme: {
-              button: { backgroundColor: brand, right: 20, bottom: 20 },
+              button: { backgroundColor: brand, right: 20, bottom: 20 }, /* ← ESQUINA INFERIOR DERECHA */
               chatWindow: {
                 title: 'Asistente ATTRAPI',
                 showTitle: true,
@@ -1663,6 +1681,7 @@
           label.textContent = 'Abrir Asistente ATTRAPI';
           document.body.appendChild(label);
 
+          /* Atajo: Alt+Shift+A para abrir */
           window.addEventListener('keydown', (e) => {
             if (e.altKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
               openAssistantWithRetry();
@@ -1675,7 +1694,5 @@
     });
   })();
   </script>
-
 </body>
 </html>
-
