@@ -2,7 +2,7 @@
 <html lang="es" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <title>Organigrama — ATTRAPI</title>
+  <title>Organigrama — ARTF</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
@@ -61,7 +61,6 @@
 
     .search{display:flex;gap:8px;align-items:center;background:#fff;padding:6px;border:1px solid var(--stroke);border-radius:12px}
     [data-theme="dark"] .search{ background:#0b1220; }
-    /* ← SOLO este cambio: de 220px a 180px */
     .search input{border:none;outline:none;font:600 14px ui-sans-serif,system-ui;min-width:180px;background:transparent;color:var(--text)}
 
     .note{ flex-basis:100%; text-align:right; font-weight:600; font-size:12.5px; color:var(--muted); margin-top:4px; }
@@ -146,12 +145,11 @@
     .attr-tooltip ol{ margin:0; padding-left:18px; max-height:260px; overflow:auto }
     .attr-tooltip li{ margin:6px 0; font-size:12.5px }
     .attr-tooltip code{ font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; }
-    .attr-tooltip .hint{ margin-top:8px; font-size:11px; color:var(--muted) }
   </style>
 </head>
 <body>
   <header>
-    <h1>Organigrama · ATTRAPI</h1>
+    <h1>Organigrama · ARTF</h1>
 
     <div class="search">
       <input id="q" list="acro-list" placeholder="Buscar por acrónimo o nombre…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
@@ -917,11 +915,31 @@
     const tooltip = d3.select('#chart').append('div').attr('class','attr-tooltip');
     let pinned = null;          // { id, type: 'attr'|'proc' }
     let activeAnchorEl = null;  // HTMLElement del badge activo (hover o pin)
+    let hoverOnTooltip = false; // ← NUEVO: mantener abierto al entrar al cuadro
+    let hideTimer = null;
+
+    function cancelHideTimer(){ if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; } }
+    function scheduleHide(delay=160){
+      cancelHideTimer();
+      hideTimer = setTimeout(()=>{ if (!pinned && !hoverOnTooltip) hideTooltip(); }, delay);
+    }
+
+    tooltip
+      .on('mouseenter', (ev)=>{
+        hoverOnTooltip = true;
+        cancelHideTimer();
+      })
+      .on('mouseleave', (ev)=>{
+        hoverOnTooltip = false;
+        if (!pinned) scheduleHide(140);
+      });
+
     const tooltipVisible = () => tooltip.style('display') !== 'none';
 
     function hideTooltip(){
       tooltip.style('display','none').html('');
       activeAnchorEl = null;
+      cancelHideTimer();
     }
     function clearPinned(){
       pinned = null;
@@ -1000,9 +1018,8 @@
       let a = data?.atributos ?? data?.atributo ?? [];
       if (Array.isArray(a)) return a.filter(x => !!x && String(x).trim());
       if (typeof a === 'string'){
-        const s = a.trim(); if(!s) return [];
-        const parts = s.split(/\s*(?:[IVXLCDM]+\.|\d+\.)\s+/g).filter(Boolean);
-        return parts.length ? parts : [s];
+        const s = a.trim();
+        return s ? [s] : [];
       }
       return [];
     }
@@ -1020,7 +1037,7 @@
       const items = getAtributosArrayFromData(data);
       const itemsHTML = items.map(x=>`<li>${x}</li>`).join('');
       const acr = data["acrónimo"] || data["acronimo"] || data.name || '';
-      return `<h4>Atribuciones de <strong>${acr}</strong></h4><ol type="I">${itemsHTML}</ol>`;
+      return `<h4>Atribuciones de <strong>${acr}</strong></h4><ol>${itemsHTML}</ol>`;
     }
     function renderProcedimientosHTML(data){
       const items = getProcedimientosArrayFromData(data);
@@ -1183,7 +1200,7 @@
         let attrG = g.select('g.attr-badge');
         let procG = g.select('g.proc-badge');
 
-        // Limpia siempre el contenido previo de grupos existentes
+        // Limpia contenido previo
         if (!attrG.empty()) attrG.selectAll('*').remove();
         if (!procG.empty()) procG.selectAll('*').remove();
 
@@ -1269,13 +1286,14 @@
           if (attrG) attrG.attr('transform', `translate(${xAttr},${by})`);
         }
 
-        // Eventos de badges (con stopPropagation para no abrir hijos)
+        // Eventos de badges (con protección para no abrir hijos y no cerrar al entrar al tooltip)
         function bindBadgeEvents(sel, type){
           if (!sel) return;
           const key = `${d.id}|${type}`;
           sel.attr('data-key', key)
             .on('mouseenter', (evt)=>{
               evt.stopPropagation();
+              cancelHideTimer();
               if (!showToolBadges) return;
               if (pinned && !(pinned.id===d.id && pinned.type===type)) return;
               const html = (type==='attr') ? renderAtribucionesHTML(d.data) : renderProcedimientosHTML(d.data);
@@ -1284,7 +1302,8 @@
             .on('mouseleave', (evt)=>{
               evt.stopPropagation();
               if (pinned && pinned.id===d.id && pinned.type===type) return;
-              hideTooltip();
+              // Espera un momento por si el puntero entra al tooltip:
+              scheduleHide(200);
             })
             .on('click', (evt)=>{
               evt.stopPropagation();
@@ -1543,7 +1562,7 @@
 
       pdf.setFont('helvetica','bold');
       pdf.setFontSize(14);
-      const title = 'Organigrama · ATTRAPI';
+      const title = 'Organigrama · ARTF';
       pdf.text(title, pageW/2, 12, { align: 'center' });
 
       const margin = 10, topGap = 8;
@@ -1560,7 +1579,7 @@
 
       const t = new Date();
       const pad = n => String(n).padStart(2, '0');
-      const filename = `organigrama-ATTRAPI-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
+      const filename = `organigrama-ARTF-${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}.pdf`;
 
       pdf.save(filename);
 
@@ -1652,9 +1671,9 @@
             chatflowid: '8f1072cf-0f9d-400e-974e-93d2c3ed6d3a',
             apiHost: 'https://daniel.fixtergeek.com',
             theme: {
-              button: { backgroundColor: brand, right: 20, bottom: 20 }, /* ← ESQUINA INFERIOR DERECHA */
+              button: { backgroundColor: brand, right: 20, bottom: 20 },
               chatWindow: {
-                title: 'Asistente ATTRAPI',
+                title: 'Asistente ARTF',
                 showTitle: true,
                 welcomeMessage: 'Hola 👋, ¿Dudas con el Organigrama? Pídeme ayuda.',
                 userMessage: { backgroundColor: brand, textColor: '#fff' },
@@ -1678,7 +1697,7 @@
 
           const label = document.createElement('div');
           label.className = 'chat-label';
-          label.textContent = 'Abrir Asistente ATTRAPI';
+          label.textContent = 'Abrir Asistente ARTF';
           document.body.appendChild(label);
 
           /* Atajo: Alt+Shift+A para abrir */
