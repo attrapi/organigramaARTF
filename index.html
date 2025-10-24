@@ -59,6 +59,14 @@
     .btn:active{ transform:translateY(0) scale(0.997); box-shadow: inset 0 2px 0 rgba(0,0,0,.04); }
     .btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.35); }
 
+    /* === FIX solicitado: mejor contraste en hover de botones del header en modo oscuro === */
+    [data-theme="dark"] header .btn:not(.fancy):hover{
+      background:#1f2937 !important; /* fondo oscuro para que el texto claro se lea bien */
+      border-color:#334155 !important;
+      color:#e5e7eb !important;
+    }
+    /* === FIN del FIX === */
+
     .search{display:flex;gap:8px;align-items:center;background:#fff;padding:6px;border:1px solid var(--stroke);border-radius:12px}
     [data-theme="dark"] .search{ background:#0b1220; }
     .search input{border:none;outline:none;font:600 14px ui-sans-serif,system-ui;min-width:180px;background:transparent;color:var(--text)}
@@ -838,7 +846,7 @@
                           "Dar seguimiento al macroproceso en materia de obra pública y servicios relacionados realizadas por las direcciones generales.",
                           "Llevar un registro de los insumos y productos generados por las áreas administrativas de la Coordinación General de Construcción de Vías y Trenes derivados del macroproceso en materia de obra pública y servicios relacionados.",
                           "Procesar la información y correspondencia recibida en la Coordinación para su registro y archivo.",
-                          "Realizar la recepción, seguimiento, distribución y asignación de la correspondencia interna y externa de la Oficina de la Dirección de Procesos Administrativos de Obras, para su atención oportuna por las Unidades Administrativas y de Apoyo Técnico‑Operativo.",
+                          "Realizar la recepción, seguimiento, distribución y asignación de la correspondencia interna y externa de la Oficina de la Dirección de Procesos Administrativos de Obras, para su atención oportuna por las Unidades Administrativas y de Apoyo Técnico-Operativo.",
                           "Analizar la información de los procedimientos de obras de un proyecto ferroviario para identificar desviaciones e instruir soluciones inmediatas a puntos críticos según los objetivos establecidos.",
                           "Mantener actualizados los informes emitidos por la Coordinación General de Construcción de Vías y Trenes.",
                           "Las demás funciones que le sean conferidas por su superior jerárquico en el ámbito de su competencia."
@@ -1533,7 +1541,7 @@
     // Toggle global de Tooltips A/P
     btnTips?.addEventListener('click', ()=>{
       showToolBadges = !showToolBadges;
-      btnTips.textContent = showToolBadges ? 'Atribuciones y Procedimientos: ON' : 'Atribuciones y Procedimientos';
+      btnTips.textContent = showToolBadges ? 'Atribuciones y Procedimientos' : 'Atribuciones y Procedimientos';
       if (!showToolBadges){ clearPinned(); hideTooltip(); }
       update(root);
     });
@@ -1715,4 +1723,3 @@
   </script>
 </body>
 </html>
-
